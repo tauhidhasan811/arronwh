@@ -1,6 +1,16 @@
-def main():
-    print("Hello from arronwh!")
+
+from dotenv import load_dotenv
+from src.config.config_chat_model import ChatModels
 
 
-if __name__ == "__main__":
-    main()
+load_dotenv()
+chat_model = ChatModels()
+
+llm = chat_model.LoadOpenaiChatModel()
+
+response = llm.invoke('hi')
+
+print(response)
+
+
+
