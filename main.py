@@ -10,7 +10,7 @@ llm = chat_model.LoadOpenaiChatModel()
 
 response = llm.invoke('hi')
 
-print(response)
+print(response.content)
 
 
 
