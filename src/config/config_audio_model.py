@@ -32,12 +32,18 @@ class AudioModel:
     #     return response.text
     def audio_to_text(self, audio_path):
 
-        with open(audio_path, "rb") as audio_file:
+        # with open(audio_path, "rb") as audio_file:
+        #     result = self.client.audio.transcriptions.create(
+        #         model=self.model_name,
+        #         file=audio_file,
+        #         response_format="verbose_json"
+        #     )
+        #     # print(result.segments.text)
+
+        # return result
+        with open(audio_path, 'rb') as audio_file:
             result = self.client.audio.transcriptions.create(
                 model=self.model_name,
-                file=audio_file,
-                response_format="verbose_json"
+                file=audio_file
             )
-            # print(result.segments.text)
-
-        return result
+        return result.text
