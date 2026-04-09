@@ -14,5 +14,5 @@ from src.db.db_queries import DbQueries
 
 db = DbQueries()
 
-data = db.GetAllField(collection_name="services", isactive=True)
+data = db.GetAllField(collection_name="services", isactive=True, include_field=['heroSection.gallery.url'])
 print(list(data))

@@ -8,14 +8,14 @@ class DbQueries:
         
         collection = self.db[collection_name]
         if include_field:
-            include = {}
+            include = {'_id': 0}
             for f in include_field:
                 include.update({f:1})
             data = collection.find({'isActive': isactive}, include)
             return data
         
         elif exclude_field:
-            exclude = {}
+            exclude = {'_id': 0}
             for f in exclude_field:
                 exclude.update({f:0})
             data = collection.find({'isActive': isactive}, exclude)
