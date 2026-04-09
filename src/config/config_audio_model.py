@@ -1,4 +1,4 @@
-from openai import OpenAI
+"""from openai import OpenAI
 
 class AudioModel:
     def __init__(self, model_name = "whisper-1"):
@@ -46,4 +46,22 @@ class AudioModel:
                 model=self.model_name,
                 file=audio_file
             )
-        return result.text
+        return result.text"""
+
+from openai import OpenAI
+
+class AudioModel:
+    def __init__(self, model_name="gpt-4o-mini-transcribe"):
+        self.client = OpenAI()
+        self.model_name = model_name
+
+    def audio_to_text_stream(self, audio_path: str):
+        with open(audio_path, "rb") as audio_file:
+            stream = self.client.audio.transcriptions.create(
+                model=self.model_name,
+                file=audio_file,
+                response_format="text",
+                stream=True,
+            )
+            for event in stream:
+                yield event
