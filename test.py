@@ -14,5 +14,5 @@ from src.db.db_queries import DbQueries
 
 db = DbQueries()
 
-data = db.GetAllField(collection_name="services", isactive=True, include_field=['heroSection.gallery.url'])
+data = db.GetAllField(collection_name="products", exclude_field=['_id', 'user', 'images', 'featureInformation.featureLogo', 'includedImages', 'createdAt', 'updatedAt', 'boilerInstallationGuide.image', '__v'])
 print(list(data))

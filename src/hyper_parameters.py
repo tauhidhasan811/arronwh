@@ -1,3 +1,4 @@
 params = {
-    'accepted_parameters': ['temperature', 'streaming']
+    'accepted_parameters': ['temperature', 'streaming'],
+    
 }
