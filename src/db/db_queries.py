@@ -26,10 +26,10 @@ class DbQueries:
             data = collection.find({}, exclude)
             return data
         
-        data = collection.find({})
+        data = collection.find({}).to_list()
         return data
     
-    def GetDataByFilter(self, collection_name, exclude_data, **kwargs):
+    def GetDataByFilter(self, collection_name, exclude_field, **kwargs):
         filter = {}
         
         collection = self.db[collection_name]
@@ -41,7 +41,7 @@ class DbQueries:
                 print(f)
             filter.update(f)
         # print(f"filter -----> {filter}")
-        data = collection.find(filter, exclude_data)
+        data = collection.find(filter, exclude_field).to_list()
 
         return data
         
