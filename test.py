@@ -1,99 +1,32 @@
-"""from dotenv import load_dotenv
-from src.config.config_chat_model import ChatModels
-# from src.config.config_audio_model import AudioModel
+# import json
+# import requests
 
+# url = 'https://arronwh-backend.onrender.com/api/v1/service?sortBy=createdAt&limit=10&page=1' 
 
-load_dotenv()
-# audio_model = AudioModel()
-chat_model = ChatModels()
+# response = requests.get(url)
 
-llm = chat_model.LoadOpenaiChatModel(model_name='gpt-4.1-2025-04-14', temperature = 0.7)
-response = llm.invoke('hi')
+# # print(response.json())
 
-print(response.content)
+# with open('data/json/service_data.json', 'w', encoding='utf-8') as f:
+#     json.dump(response.json(), f, indent=4)
 
-# path = 'Battle Symphony (Official Lyric Video) - Linkin Park.mp3'
-# event = audio_model.audio_to_text(path)
+# from src.db.db_queries import DbQueries
+# from src.hyper_parameters import params
 
+# db = DbQueries()
 
-# segments = []
-# for seg in event.segments:
-#     segments= {
-#     "start": seg.start,
-#     "end": seg.end,
-#     "text": seg.text
-#     }
-#     print(segments)"""
+# # data = db.GetAllField(collection_name="products", exclude_field=['_id', 'user', 'images', 'featureInformation.featureLogo', 'includedImages', 'createdAt', 'updatedAt', 'boilerInstallationGuide.image', '__v'])
 
+# # print(list(data))
+# exclude = {}
+# exclude_field = params['collections']['products']['exclude_field']
+# for f in exclude_field:
+#     exclude.update({f:0})
+# data = db.GetDataByFilter('products',exclude_data=exclude, _id = '69d86b535fbdf0e7994ac679', payablePrice = 950)
+# print(list(data))
 
-from dotenv import load_dotenv
-from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
-import json
-import asyncio
+from src.tools.database_tools import GetAllData
 
-from src.config.config_chat_model import ChatModels
+data = GetAllData(collection_name='products', _id = '69d86b535fbdf0e7994ac679', payablePrice = 950)
 
-load_dotenv()
-
-app = FastAPI()
-
-chat_model = ChatModels()
-llm = chat_model.LoadOpenaiChatModel(
-    model_name="gpt-4.1-2025-04-14",
-    temperature=0.7,
-    streaming = True
-)
-
-
-class ChatRequest(BaseModel):
-    message: str
-
-
-async def sse_generator(user_message: str):
-    """
-    SSE format:
-    event: <event_name>
-    data: <payload>
-
-    blank line is required after each event
-    """
-    try:
-        # optional start event
-        yield f"event: start\ndata: {json.dumps({'status': 'started'})}\n\n"
-
-        # LangChain streaming
-        async for chunk in llm.astream(user_message):
-            # chunk can be AIMessageChunk
-            text = getattr(chunk, "content", "")
-
-            if not text:
-                continue
-
-            # send token/chunk to client
-            payload = {"content": text}
-            yield f"event: token\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
-
-            # gives event loop a chance for proper cancellation/flush
-            await asyncio.sleep(0)
-
-        # done event
-        yield f"event: done\ndata: {json.dumps({'status': 'completed'})}\n\n"
-
-    except Exception as e:
-        error_payload = {"error": str(e)}
-        yield f"event: error\ndata: {json.dumps(error_payload, ensure_ascii=False)}\n\n"
-
-
-@app.post("/chat/stream")
-async def chat_stream(payload: ChatRequest):
-    return StreamingResponse(
-        sse_generator(payload.message),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "X-Accel-Buffering": "no",  # useful behind nginx
-        },
-    )
+print(data)

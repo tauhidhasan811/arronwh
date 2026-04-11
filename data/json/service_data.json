@@ -1,0 +1,265 @@
+{
+    "statusCode": 200,
+    "success": true,
+    "message": "Services retrieved successfully",
+    "meta": {
+        "total": 6,
+        "page": 1,
+        "limit": 10
+    },
+    "data": [
+        {
+            "_id": "69d379e9270a6ad05facd147",
+            "user": {
+                "_id": "69d1c371cc516d37eea0d28d",
+                "fullName": "admin",
+                "email": "admin@gmail.com"
+            },
+            "title": "Premium Web Development Service",
+            "description": "We provide high-quality full-stack web development solutions.",
+            "badges": [
+                "Popular",
+                "Best Seller"
+            ],
+            "price": 300,
+            "discount": 30,
+            "images": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775466985/healthcare_app/gsrhlyjc6rchnqnhllir.webp"
+            ],
+            "features": [
+                {
+                    "title": "Fast Performance",
+                    "details": "Optimized for speed and efficiency"
+                }
+            ],
+            "featureSectionInformation": {
+                "title": "Why Choose Our Service",
+                "description": "We build modern and scalable solutions.",
+                "productLogo": "",
+                "authorLogo": "",
+                "featureImage": ""
+            },
+            "includes": [
+                "Source Code",
+                "Documentation",
+                "1 Month Support"
+            ],
+            "includeImage": [],
+            "installationGuide": "Step 1: Install dependencies. Step 2: Run the project.",
+            "installationGuideImage": "",
+            "createdAt": "2026-04-06T09:16:25.042Z",
+            "updatedAt": "2026-04-06T09:16:25.042Z",
+            "__v": 0
+        },
+        {
+            "_id": "69d34c05190f1d63e0f09638",
+            "user": {
+                "_id": "69d1c371cc516d37eea0d28d",
+                "fullName": "admin",
+                "email": "admin@gmail.com"
+            },
+            "title": "Premium Web Development Service",
+            "description": "We provide high-quality full-stack web development solutions.",
+            "badges": [
+                "Popular",
+                "Best Seller"
+            ],
+            "price": 200,
+            "discount": 20,
+            "images": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455236/healthcare_app/uugkfdgkgwnyhptjjcp8.png",
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455232/healthcare_app/iu8uxhivjqnww7c2l5yn.png"
+            ],
+            "features": [
+                {
+                    "title": "hello word",
+                    "details": "hi"
+                }
+            ],
+            "featureSectionInformation": {
+                "title": "Why Choose Our Service",
+                "description": "We deliver the best solutions for your business needs",
+                "productLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455231/healthcare_app/gvumnneu1newosxmewlh.png",
+                "authorLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455231/healthcare_app/fvfmtbuy6oe80rlqw0yc.png",
+                "featureImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455234/healthcare_app/pwmhofmcg3cwgirl0oq0.jpg"
+            },
+            "includes": [
+                "Source Code",
+                "Documentation",
+                "1 Month Support"
+            ],
+            "includeImage": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455235/healthcare_app/dbotevnlcuvkrwiaqkqv.png"
+            ],
+            "installationGuide": "Step 1: Install dependencies. Step 2: Run the project.",
+            "installationGuideImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455231/healthcare_app/m3ogh6o9bew2j6vrvvvu.jpg",
+            "createdAt": "2026-04-06T06:00:37.138Z",
+            "updatedAt": "2026-04-06T06:25:28.134Z",
+            "__v": 0
+        },
+        {
+            "_id": "69d34bb7517350b17dbea02a",
+            "user": {
+                "_id": "69d1c371cc516d37eea0d28d",
+                "fullName": "admin",
+                "email": "admin@gmail.com"
+            },
+            "title": "Premium Web Development Service",
+            "description": "We provide high-quality full-stack web development solutions.",
+            "badges": [
+                "Popular",
+                "Best Seller"
+            ],
+            "price": 200,
+            "discount": 20,
+            "images": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455160/healthcare_app/g1zxwqc2ogwsmphpzf0z.png",
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455156/healthcare_app/icquyst7aufllqpsnejt.png"
+            ],
+            "features": [],
+            "featureSectionInformation": {
+                "title": "Why Choose Our Service",
+                "description": "We deliver the best solutions for your business needs",
+                "productLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455156/healthcare_app/ybux4snsav0uy7wesbeo.png",
+                "authorLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455157/healthcare_app/b5j0soo365kuw5my2jbk.png",
+                "featureImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455157/healthcare_app/omeoscjnaep6igwzcwfu.jpg"
+            },
+            "includes": [
+                "Source Code",
+                "Documentation",
+                "1 Month Support"
+            ],
+            "includeImage": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455157/healthcare_app/yxdb4fyaosmmscapgbd0.png"
+            ],
+            "installationGuide": "Step 1: Install dependencies. Step 2: Run the project.",
+            "installationGuideImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455157/healthcare_app/lfi1ybp6thsdr8dwc7y6.jpg",
+            "createdAt": "2026-04-06T05:59:19.816Z",
+            "updatedAt": "2026-04-06T05:59:19.816Z",
+            "__v": 0
+        },
+        {
+            "_id": "69d34b41c144cd21f7650ddf",
+            "user": {
+                "_id": "69d1c371cc516d37eea0d28d",
+                "fullName": "admin",
+                "email": "admin@gmail.com"
+            },
+            "title": "Premium Web Development Service",
+            "description": "We provide high-quality full-stack web development solutions.",
+            "badges": [
+                "Popular",
+                "Best Seller"
+            ],
+            "price": 200,
+            "discount": 20,
+            "images": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455040/healthcare_app/rscbknefpgnl58ep9eow.png",
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455040/healthcare_app/eghe3iywwmnul1pa9ycu.png"
+            ],
+            "features": [],
+            "featureSectionInformation": {
+                "title": "Why Choose Our Service",
+                "description": "We deliver the best solutions for your business needs",
+                "productLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455039/healthcare_app/x0hraf3plcfr5fwefxll.png",
+                "authorLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455042/healthcare_app/jb2avaci8lw7hqwy3nvl.png",
+                "featureImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455038/healthcare_app/lcznu0s27qoisbv3wntj.jpg"
+            },
+            "includes": [
+                "Source Code",
+                "Documentation",
+                "1 Month Support"
+            ],
+            "includeImage": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455039/healthcare_app/mkgirhflqekbaarpsgmq.png"
+            ],
+            "installationGuide": "Step 1: Install dependencies. Step 2: Run the project.",
+            "installationGuideImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775455038/healthcare_app/dt54klv98lhar1nrirck.jpg",
+            "createdAt": "2026-04-06T05:57:21.511Z",
+            "updatedAt": "2026-04-06T05:57:21.511Z",
+            "__v": 0
+        },
+        {
+            "_id": "69d33f7476e9d07b5a16e33c",
+            "user": {
+                "_id": "69d1c371cc516d37eea0d28d",
+                "fullName": "admin",
+                "email": "admin@gmail.com"
+            },
+            "title": "Premium Web Development",
+            "description": "Full-stack web solutions.",
+            "badges": [
+                "Popular",
+                "Best Seller"
+            ],
+            "price": 300,
+            "discount": 30,
+            "images": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775452019/healthcare_app/f8lf96gxnefwxztfnhei.png",
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775452019/healthcare_app/hbq4qydm3wbjye14qldb.png"
+            ],
+            "features": [
+                {}
+            ],
+            "featureSectionInformation": {
+                "productLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775452019/healthcare_app/cmfppfuzuvxwebq6jdbe.jpg",
+                "authorLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775452020/healthcare_app/pskieunniewqzcswflio.png",
+                "featureImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775452019/healthcare_app/fquiot32czvvn89jjcc5.jpg"
+            },
+            "includes": [
+                "Source Code",
+                "Documentation"
+            ],
+            "includeImage": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775452021/healthcare_app/ixvnykjhrsel3lo4eyzw.jpg",
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775452020/healthcare_app/ihaw0za6myoywyfxgppa.jpg"
+            ],
+            "installationGuide": "Step 1: Install. Step 2: Run.",
+            "installationGuideImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775452020/healthcare_app/e3fkoxylvksxkvgpcrdg.jpg",
+            "createdAt": "2026-04-06T05:07:00.722Z",
+            "updatedAt": "2026-04-06T05:07:00.722Z",
+            "__v": 0
+        },
+        {
+            "_id": "69d33ec4da43093283e0b2b0",
+            "user": {
+                "_id": "69d1c371cc516d37eea0d28d",
+                "fullName": "admin",
+                "email": "admin@gmail.com"
+            },
+            "title": "Premium Web Development",
+            "description": "Full-stack web solutions.",
+            "badges": [
+                "Popular",
+                "Best Seller"
+            ],
+            "price": 300,
+            "discount": 30,
+            "images": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775451843/healthcare_app/deb1bzksq5ftn8zpreep.png",
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775451843/healthcare_app/teckxycr7pfvysybwxqy.png"
+            ],
+            "features": [
+                {}
+            ],
+            "featureSectionInformation": {
+                "productLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775451843/healthcare_app/jbasulaj9aj9svccfyyd.jpg",
+                "authorLogo": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775451843/healthcare_app/rwbgf7qnuvy92ivldpyi.png",
+                "featureImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775451843/healthcare_app/fxcr3cmtc4ta6qv3owet.jpg"
+            },
+            "includes": [
+                "Source Code",
+                "Documentation"
+            ],
+            "includeImage": [
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775451844/healthcare_app/jvpxjd0pntdg7dswtqep.jpg",
+                "https://res.cloudinary.com/dlpdumtua/image/upload/v1775451843/healthcare_app/bd4o6opylhsalnawtyyi.jpg"
+            ],
+            "installationGuide": "Step 1: Install. Step 2: Run.",
+            "installationGuideImage": "https://res.cloudinary.com/dlpdumtua/image/upload/v1775451843/healthcare_app/omsh1eyilqkriamsiat5.jpg",
+            "createdAt": "2026-04-06T05:04:04.368Z",
+            "updatedAt": "2026-04-06T05:04:04.368Z",
+            "__v": 0
+        }
+    ]
+}
