@@ -1,5 +1,6 @@
 params = {
     'accepted_parameters': ['temperature', 'streaming'],
+    'model_name': 'gpt-4.1-2025-04-14',
     'collections': {
         'products': {
             'exclude_field' : ['images', 'includedImages', 'featureInformation.featureLogo', 'user', 'createdAt', 'updatedAt', '__v']
