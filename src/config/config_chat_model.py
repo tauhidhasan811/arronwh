@@ -1,12 +1,14 @@
 from langchain_openai import ChatOpenAI
 from src.hyper_parameters import params
+from src.tools.database_tools import GetAllData
 from typing import Any
 
 class ChatModels:
 
-    @staticmethod
-    def LoadOpenaiChatModel(model_name='gpt-4.1-2025-04-14', 
-                            **kwargs)->ChatOpenAI:
+    def __init__(self):
+        self.model_name=params['model_name']
+
+    def ConfigLLM(self, **kwargs)->ChatOpenAI:
 
         accepted_params = params['accepted_parameters']
         invalid_keys = [key for key in kwargs if key not in accepted_params]
@@ -14,9 +16,15 @@ class ChatModels:
             raise ValueError(f"Unsupported parameters: {invalid_keys}")
 
         config : dict[str: Any] = {
-            'model': model_name
+            'model': self.model_name
         }
 
         config.update(kwargs)
         llm = ChatOpenAI( **config)
-        return llm         
+        return llm
+    
+
+    def GetChatModel(self, **kwargs):
+        llm = self.ConfigLLM(**kwargs)
+        llm_with_tools = llm.bind_tools([GetAllData])
+        return llm_with_tools

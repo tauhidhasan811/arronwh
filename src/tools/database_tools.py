@@ -1,12 +1,19 @@
 from langchain_core.tools import tool
 from src.hyper_parameters import params
 from src.db.db_queries import DbQueries
+from pydantic import BaseModel
 
-# @tool
-def GetAllData(collection_name):
-    """Extract data like three collection where one cluster name is products wherehave boilder fileds are " _id, payablePrice 
-    secound one is controllers where there are boiler controllers
-    third one is extras where there are extra items"""
+class Body(BaseModel):
+    collection_name: str
+
+
+
+@tool
+def GetAllData(body: Body):
+    """Extract data like three collection where one cluster name is "products" wherehave boiler
+    secound one is "controllers" where there are boiler controllers
+    third one is "extras" where there are extra items"""
+    collection_name = body.collection_name
 
     
     db = DbQueries()
