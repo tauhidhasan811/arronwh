@@ -8,7 +8,7 @@ params = {
             'exclude_field' : []
         },
         'extras': {
-            'exclude_field' : []
+            'exclude_field' : ['images', 'createdAt', 'updatedAt', '__v']
         }
     }
     

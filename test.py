@@ -27,6 +27,5 @@
 
 from src.tools.database_tools import GetAllData
 
-data = GetAllData(collection_name='products', _id = '69d86b535fbdf0e7994ac679', payablePrice = 950)
-
+data = GetAllData(collection_name='extras')
 print(data)
