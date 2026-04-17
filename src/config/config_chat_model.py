@@ -8,7 +8,7 @@ class ChatModels:
     def __init__(self):
         self.model_name=params['model_name']
 
-    def ConfigLLM(self, **kwargs)->ChatOpenAI:
+    def __config_llm(self, **kwargs)->ChatOpenAI:
 
         accepted_params = params['accepted_parameters']
         invalid_keys = [key for key in kwargs if key not in accepted_params]
@@ -25,6 +25,6 @@ class ChatModels:
     
 
     def GetChatModel(self, **kwargs):
-        llm = self.ConfigLLM(**kwargs)
+        llm = self.__config_llm(**kwargs)
         llm_with_tools = llm.bind_tools([GetAllData])
         return llm_with_tools

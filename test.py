@@ -29,3 +29,4 @@ from src.tools.database_tools import GetAllData
 
 data = GetAllData(collection_name='extras')
 print(data)
+
