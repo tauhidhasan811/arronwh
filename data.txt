@@ -1,0 +1,41 @@
+content='' 
+additional_kwargs={
+    'refusal': None
+    } 
+response_metadata={
+    'token_usage': {
+        'completion_tokens': 18, 
+        'prompt_tokens': 133, 
+        'total_tokens': 151, 
+        'completion_tokens_details': {
+            'accepted_prediction_tokens': 0, 
+            'audio_tokens': 0, 
+            'reasoning_tokens': 0, 
+            'rejected_prediction_tokens': 0
+        }, 
+        'prompt_tokens_details': 
+            {
+                'audio_tokens': 0, 
+                'cached_tokens': 0
+            }
+    }, 
+    'model_provider': 'openai', 
+    'model_name': 'gpt-4.1-2025-04-14', 
+    'system_fingerprint': 'fp_2c3e9df4f1', 
+    'id': 'chatcmpl-DUQkwlKBWNDy5vYpW2v4v4jZyfzBm', 
+    'service_tier': 'default', 
+    'finish_reason': 'tool_calls',
+    'logprobs': None
+} 
+id='lc_run--019d8a7f-17f7-7bf3-ac44-e81bd9112cf7-0' 
+tool_calls=[
+    {
+        'name': 'GetAllData', 
+        'args': {
+            'body': {
+                'collection_name': 'products'
+                }
+        }, 
+        'id': 'call_zA4nsSXLfdLZUibsNevISHr0', 'type': 'tool_call'
+        }
+    ] invalid_tool_calls=[] usage_metadata={'input_tokens': 133, 'output_tokens': 18, 'total_tokens': 151, 'input_token_details': {'audio': 0, 'cache_read': 0}, 'output_token_details': {'audio': 0, 'reasoning': 0}}
