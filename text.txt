@@ -1,0 +1,55 @@
+
+
+The functional requirements describe the core operations that the system must perform.
+
+FR1: Data Input and Loading
+  The system shall load and manage datasets from multiple sources, including CASME, CASME II, CASME², and RAVDESS, supporting both image and video formats.
+
+FR2: Data Preprocessing
+  The system shall preprocess input data by performing operations such as frame extraction (for videos), face detection, resizing, normalization, and noise reduction.
+
+FR3: Feature Extraction and Representation
+  The system shall extract relevant features from input data using deep learning-based techniques suitable for emotion recognition.
+
+FR4: Model Training
+  The system shall train both pre-trained (transfer learning) and custom deep learning models using the processed dataset.
+
+FR5: Emotion Classification
+  The system shall classify input data into predefined emotion categories and generate prediction outputs.
+
+FR6: Model Validation
+  The system shall apply k-fold cross-validation to evaluate model performance across different data splits.
+
+FR7: Output Generation
+  The system shall display predicted emotion labels along with confidence scores.
+
+FR8: Explainability (XAI)
+  The system shall provide interpretable outputs (e.g., visual explanations such as heatmaps) to explain model decisions.
+
+
+
+3.3.2 Non-Functional Requirements
+
+The non-functional requirements define the quality attributes and constraints of the system.
+
+NFR1: Performance
+  The system shall achieve a minimum classification accuracy of at least 80% and generate predictions within an acceptable response time (e.g., less than 2 seconds per input).
+
+NFR2: Scalability
+  The system shall support the addition of new datasets and emotion classes without requiring major architectural changes.
+
+NFR3: Usability
+  The system shall provide clear and understandable output, ensuring ease of interpretation for users.
+
+NFR4: Reliability
+  The system shall produce consistent results across multiple runs under similar conditions.
+
+NFR5: Maintainability
+  The system shall be modular in design, allowing easy updates to models, datasets, and preprocessing steps.
+
+NFR6: Security
+  The system shall ensure safe handling of data and prevent unauthorized access or modification of datasets and model outputs.
+
+NFR7: Efficiency
+  The system shall optimize resource usage, including memory and computational power, during training and inference.
+
