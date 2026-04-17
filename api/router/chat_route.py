@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from api.schemas.chat_body import Chatbody
 from src.services.data_processor import DataProcessor
 from src.services.prompt_templete import Prompt

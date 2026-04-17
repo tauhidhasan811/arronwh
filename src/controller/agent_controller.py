@@ -48,5 +48,8 @@ class AgenController:
     
     async def get_response(self, user_query, previous_chat) -> AsyncIterable['str']:
         prompt = Prompt(user_query=user_query, previous_chat=previous_chat)
+        have_tools, content, tools_data = self.__get_agent_response(prompt=prompt)
+        while 
+
 
         
