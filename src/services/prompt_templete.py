@@ -1,3 +1,4 @@
+from langchain.messages import HumanMessage, SystemMessage, AIMessage
 from langchain_core.prompts import PromptTemplate
 
 def Prompt(user_input):
