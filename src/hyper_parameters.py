@@ -10,7 +10,10 @@ params = {
         },
         'extras': {
             'exclude_field' : ['images', 'createdAt', 'updatedAt', '__v']
-        }
+        },
+        # 'services': {
+        #     'exclude_field' : ['_id', 'user', 'updatedAt', '__v']
+        # }
     }
     
 }
