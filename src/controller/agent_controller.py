@@ -1,55 +1,185 @@
-from typing import List, Dict
+# from typing import List, Dict
+# from src.config.config_chat_model import ChatModels
+# from src.tools.database_tools import GetAllData
+# from src.services.prompt_templete import PromptGenerator
+# from src.tools.database_tools import GetAllData
+# from collections.abc import AsyncIterable
+
+# class AgenController:
+#     def __init__(self):
+#         self.agent = ChatModels().GetChatModel()
+#         self.promptGen = PromptGenerator()
+    
+
+#     def __call_agent(self, prompt):
+#         response = self.agent.invoke(prompt)
+#         return response
+    
+#     def __get_tools_data(self, tools: List) -> List:
+
+#         all_tools_data = []
+#         for tool in tools:
+            
+#             name = tool['name']
+#             tools_data = {'tool_name': name}
+#             args = tool['args']
+#             tool_result = GetAllData.invoke(args)
+#             tools_data['tool_result'] = tool_result
+#             all_tools_data.append(tools_data)
+#         print('*'* 60)
+#         print(' '* 20, "Tools data are")
+#         print('*'* 60)
+#         print(all_tools_data)
+
+#         return all_tools_data
+
+
+
+#     def __get_agent_response(self, prompt):
+
+#         response = self.__call_agent(prompt=prompt)
+
+#         have_tools = False
+#         tools_data = []
+        
+#         tools = response.tool_calls
+#         print('x'* 60)
+#         print(' '* 20, f"Find tools {tools}")
+#         print('x'* 60)
+#         if tools:
+#             have_tools = True
+#             tools_data = tools_data.extend(self.__get_tools_data(tools=tools))
+#         content = response.content
+
+#         return have_tools, content, tools_data
+    
+#     async def get_response(self, user_query, previous_chat) -> AsyncIterable['str']:
+#         prompt = self.promptGen.GeneralPrompt(user_query=user_query, previous_chat=previous_chat)
+#         have_tools, content, tools_data = self.__get_agent_response(prompt=prompt)
+#         # while have_tools:
+#         if have_tools:
+#             yield f"Analysing tools data. \n"
+#             tools_prompt = self.promptGen.ToolsPrompt(user_query=user_query,
+#                                                       tools_data=tools_data)
+#             have_tools, content, tools_data = self.__get_agent_response(prompt=tools_prompt)
+
+#             yield content
+#         else:
+#             yield content
+#         # tools_output = []
+#         # for tool in tools_data:
+#         #     name = tool['name']
+#         #     args = tool['datas']
+#         #     message = f"Calling tools {name}"
+#         #     yield content
+#         #     yield message
+            
+#         #     # data = {"tool_name": name}
+#         #     # tools_result = GetAllData.invoke(args)
+#         #     # data['tool_result'] = tools_result
+#         #     # tools_output.append(data)
+#         # if have_tools:
+#         #     tool_prompt = self.promptGen.ToolsPrompt(user_query=user_query, tools_data=tools_output)
+#         #     have_tools, content, tools_data = self.__get_agent_response(prompt=prompt)
+#         #     yield content
+#         # yield content
+            
+
+
+from typing import List
+from collections.abc import AsyncIterable
+
 from src.config.config_chat_model import ChatModels
 from src.tools.database_tools import GetAllData
-from src.services.prompt_templete import Prompt
-from collections.abc import AsyncIterable
+from src.services.prompt_templete import PromptGenerator
+
 
 class AgenController:
     def __init__(self):
         self.agent = ChatModels().GetChatModel()
-    
+        self.promptGen = PromptGenerator()
 
     def __call_agent(self, prompt):
-        response = self.agent.invoke(prompt)
-        return response
-    
-    def __get_tools_data(self, tools: List) -> Dict:
+        return self.agent.invoke(prompt)
 
+    async def __call_agent_stream(self, prompt) -> AsyncIterable[str]:
+        async for chunk in self.agent.astream(prompt):
+            content = getattr(chunk, "content", None)
 
-        all_tools_data = {}
-        tools_data = []
-        tools_name = []
+            if isinstance(content, str) and content:
+                yield content
+            elif isinstance(content, list):
+                for item in content:
+                    if isinstance(item, dict) and item.get("type") == "text":
+                        text = item.get("text", "")
+                        if text:
+                            yield text
+
+    def __get_tools_data(self, tools: List) -> List:
+        all_tools_data = []
+
         for tool in tools:
-            name = tool['name']
-            tools_name.append(name)
-            data = {'tool_name': name}
-            args = tool['args']['body']
+            name = tool["name"]
+            args = tool["args"]
+
             tool_result = GetAllData.invoke(args)
-            data['tool_result': tool_result]
-            tools_data.append(data)
-        all_tools_data['names'] = tools_name
-        all_tools_data['datas'] = tools_data
+
+            all_tools_data.append({
+                "tool_name": name,
+                "tool_result": tool_result
+            })
+
+        print("*" * 60)
+        print(" " * 20, "Tools data are")
+        print("*" * 60)
+        print(all_tools_data)
+
         return all_tools_data
-
-
 
     def __get_agent_response(self, prompt):
         response = self.__call_agent(prompt=prompt)
 
         have_tools = False
         tools_data = []
-        tools = response.tool_calls
+
+        tools = getattr(response, "tool_calls", []) or []
+
+        print("x" * 60)
+        print(" " * 20, f"Find tools {tools}")
+        print("x" * 60)
+
         if tools:
             have_tools = True
-            tools_data = tools_data.extend(self.__get_tools_data(tools=tools))
-        content = response.content
+            tools_data = self.__get_tools_data(tools=tools)
 
+        content = response.content
         return have_tools, content, tools_data
-    
-    async def get_response(self, user_query, previous_chat) -> AsyncIterable['str']:
-        prompt = Prompt(user_query=user_query, previous_chat=previous_chat)
-        have_tools, content, tools_data = self.__get_agent_response(prompt=prompt)
-        while 
+
+    async def get_response(self, user_query, previous_chat) -> AsyncIterable[str]:
+        try:
+            prompt = self.promptGen.GeneralPrompt(
+                user_query=user_query,
+                previous_chat=previous_chat
+            )
+
+            have_tools, content, tools_data = self.__get_agent_response(prompt=prompt)
+
+            if have_tools:
+                yield "Analysing tools data...\n"
+
+                tools_prompt = self.promptGen.ToolsPrompt(
+                    user_query=user_query,
+                    tools_data=tools_data
+                )
+
+                async for chunk in self.__call_agent_stream(prompt=tools_prompt):
+                    yield chunk
+            else:
+                async for chunk in self.__call_agent_stream(prompt=prompt):
+                    yield chunk
+
+        except Exception as e:
+            yield f"Error: {str(e)}"
 
 
         
