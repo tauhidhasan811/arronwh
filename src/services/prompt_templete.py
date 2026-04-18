@@ -7,7 +7,13 @@ class PromptGenerator:
     @staticmethod   
     def GeneralPrompt(user_query, previous_chat: List[Dict]):
         sys_message = SystemMessage(
-            content=f"You are a assiestent of the boiler company where sell boilders/product, controllers of that and extrals. Your task is answer of them and also call the tools if needed. Answer the user query"
+            content = (
+                "You are an assistant for a boiler company that sells boilers, controllers, and related products. "
+                "Your responsibility is to answer customer queries about these products and use available tools when necessary. "
+                "Provide accurate, concise, and relevant answers. "
+                "Do not hallucinate or make up information. "
+                "If the question is outside the scope of boilers, controllers, or related products, politely respond with a brief apology and state that you can only assist with company-related products."
+            )
         )
 
         hum_message = HumanMessage(

@@ -20,7 +20,7 @@ async def main():
                 "ai_response": "string"
             }
         ],
-        "user_query": "how are you ? tell about you in 300 word"
+        "user_query": "give the price"
     }
 
     async with httpx.AsyncClient(timeout=None) as client:

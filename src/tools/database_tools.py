@@ -31,9 +31,11 @@ def GetAllData(body: Body):
     return data
 
 def GetSelectedData(collection_name, **kwargs):
-    """Extract data like three collection where one cluster name is products wherehave boilder fileds are " _id, payablePrice 
+    """Extract data like four collection 
+    where one cluster name is products wherehave boilder  
     secound one is controllers where there are boiler controllers
-    third one is extras where there are extra items"""
+    third one is extras where there are extra items
+    and also services collection where have which spacific sevice we peovide"""
 
     
     db = DbQueries()
