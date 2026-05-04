@@ -36,13 +36,13 @@ import time
 from fastapi.responses import StreamingResponse
 
 message = """
-Rick: (stumbles in drunkenly, and turns on the lights) Morty! You gotta come on. You got--... you gotta come with me.
-Morty: (rubs his eyes) What, Rick? What's going on?
-Rick: I got a surprise for you, Morty.
-Morty: It's the middle of the night. What are you talking about?
-Rick: (spills alcohol on Morty's bed) Come on, I got a surprise for you. (drags Morty by the ankle) Come on, hurry up. (pulls Morty out of his bed and into the hall)
-Morty: Ow! Ow! You're tugging me too hard!
-Rick: We gotta go, gotta get outta here, come on. Got a surprise for you Morty.
+        Rick: (stumbles in drunkenly, and turns on the lights) Morty! You gotta come on. You got--... you gotta come with me.
+        Morty: (rubs his eyes) What, Rick? What's going on?
+        Rick: I got a surprise for you, Morty.
+        Morty: It's the middle of the night. What are you talking about?
+        Rick: (spills alcohol on Morty's bed) Come on, I got a surprise for you. (drags Morty by the ankle) Come on, hurry up. (pulls Morty out of his bed and into the hall)
+        Morty: Ow! Ow! You're tugging me too hard!
+        Rick: We gotta go, gotta get outta here, come on. Got a surprise for you Morty.
 """
 
 app = FastAPI()
@@ -52,6 +52,7 @@ async def story_generator() -> AsyncIterable[str]:
         time.sleep(1)
         yield line + '\n'
 
-@app.get('/api/get')
-async def stream_story():
-    return StreamingResponse(story_generator(), media_type='text/plain')
+print()
+# @app.get('/api/get')
+# async def stream_story():
+#     return StreamingResponse(story_generator(), media_type='text/plain')

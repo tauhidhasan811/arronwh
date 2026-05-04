@@ -1,4 +1,5 @@
 import re
+from docx import Document
 from typing import List, Dict
 from api.schemas.chat_body import ChatHistoryItem
 
@@ -35,3 +36,10 @@ class DataProcessor:
 
         return list(reversed(selected_chat))
     
+    @staticmethod
+    def read_docx(file_path):
+        document = Document(file_path)
+        text = []
+        for paragraph in document.paragraphs:
+            text.append(paragraph.text)
+        return '\n'.join(text)
