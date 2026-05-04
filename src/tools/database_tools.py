@@ -35,7 +35,7 @@ def GetSelectedData(collection_name, **kwargs):
     where one cluster name is products wherehave boilder  
     secound one is controllers where there are boiler controllers
     third one is extras where there are extra items
-    and also services collection where have which spacific sevice we peovide"""
+    and also services collection where have which spacific sevice we peovide """
 
     
     db = DbQueries()
