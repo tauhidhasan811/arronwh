@@ -19,14 +19,15 @@ async def chat_with_ai(body: Chatbody):
     return StreamingResponse(agent_controller.get_response(user_query=user_query, previous_chat=previous_chat), media_type='text/plain')
     # prompt = Prompt(user_query, selected_chat)
     # print(type(previous_chat))
+    # message = agent_controller.get_response(user_query=user_query, previous_chat=previous_chat)
     # response = JSONResponse(
     #     status_code=200,
     #     content={
     #         'status': True,
     #         'status_code': 200,
-    #         'response': prompt
+    #         'response': message
     #     }
     # )
     # return response
 
-    # return body
+    return message

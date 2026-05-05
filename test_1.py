@@ -16,12 +16,12 @@ async def main():
     payload = {
         "previous_chat": [
             {
-                "user_query": "string",
-                "ai_response": "string"
+            "user_query": "give me price",
+            "ai_response": "Thank you for your query. Could you please specify which product you are interested in—boilers, controllers, or any specific model or accessory? This will help me provide you with the accurate price information."
             }
         ],
-        "user_query": "give the price"
-    }
+        "user_query": "controllers"
+        }
 
     async with httpx.AsyncClient(timeout=None) as client:
         async with client.stream(
