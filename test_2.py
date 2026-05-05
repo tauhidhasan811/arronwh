@@ -4,4 +4,4 @@ path = r"data\files\YoloHeat Company Guide.docx"
 
 data = DataProcessor.read_docx(path)
 
-print(data)
+print(len(data))

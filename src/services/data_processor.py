@@ -40,6 +40,9 @@ class DataProcessor:
     def read_docx(file_path):
         document = Document(file_path)
         text = []
+        para_num = 0
         for paragraph in document.paragraphs:
             text.append(paragraph.text)
+            para_num += 1
+        print(f"Total number of paragraph : {para_num}")
         return '\n'.join(text)

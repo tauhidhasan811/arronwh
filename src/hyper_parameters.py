@@ -5,7 +5,7 @@ params = {
         'products': {
             'exclude_field' : ['images', 'includedImages', 'featureInformation.featureLogo', 'user', 'createdAt', 'updatedAt', '__v']
         },
-        'controllers': {
+        'boilercontrollers': {
             'exclude_field' : []
         },
         'extras': {
