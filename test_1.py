@@ -27,6 +27,7 @@ async def main():
         async with client.stream(
             "POST",
             "http://127.0.0.1:8000/api/ai/chatbot",
+            # "https://arronwh.onrender.com/api/ai/chatbot",
             json=payload
         ) as response:
             async for line in response.aiter_lines():

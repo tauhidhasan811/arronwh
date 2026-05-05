@@ -16,7 +16,7 @@ async def chat_with_ai(body: Chatbody):
     user_query = body.user_query
     agent_controller = AgenController()
 
-    return StreamingResponse(agent_controller.get_response(user_query=user_query, previous_chat=previous_chat), media_type='text/plain')
+    return StreamingResponse(agent_controller.get_response(user_query=user_query, previous_chat=previous_chat), media_type='text/event-stream')
     # prompt = Prompt(user_query, selected_chat)
     # print(type(previous_chat))
     # message = agent_controller.get_response(user_query=user_query, previous_chat=previous_chat)
