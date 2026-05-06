@@ -67,11 +67,18 @@ class DataProcessor:
 
     @staticmethod
     def embedde_sentence(sentences: List):
+
         print(type(sentences))
         if type(sentences) is not list:
             print("Data type is not list")
             sentences = [sentences]
-        
+        embedding= []
         ebd_model = Embedder().hugg_sentence_embedder()
-        embedding = ebd_model.encode(sentences)
+        if __name__ == '__main__':
+            pool = ebd_model.start_multi_process_pool()
+            # embedding = ebd_model.encode(sentences)
+            embedding = ebd_model.encode_multi_process(sentences, pool)
+            ebd_model.stop_multi_process_pool(pool)
+        if not embedding:
+            embedding = ebd_model.encode(sentences)
         return embedding

@@ -1,16 +1,32 @@
-from src.services.data_processor import DataProcessor
-from src.config.config_chromadb import ChromaDB
+# import time 
 
-path = r'data\files\YoloHeat Company Guide.docx'
+# from src.services.data_processor import DataProcessor
+# from src.config.config_chromadb import ChromaDB
+# from src.services.delete_path import force_delete_folder
 
-chunk = DataProcessor.create_chunk(path)
+# path = r'data\files\YoloHeat Company Guide.docx'
 
-data = ["hi !! how are you??"]
+# chunk = DataProcessor.create_chunk(path)
 
-ebd = DataProcessor.embedde_sentence(data)
-print(ebd.shape)
-# print(chunk)
+# data = ["hi !! how are you??"]
 
-chroma_db = ChromaDB()
+# ebd = DataProcessor.embedde_sentence(data)
+# print(ebd.shape)
+# # print(chunk)
 
-chroma_db.store_knowledge(chunk=data, embedding=ebd)
+# force_delete_folder(path = 'data/chroma_db')
+# time.sleep(30)
+# chroma_db = ChromaDB()
+
+# chroma_db.store_knowledge(chunk=data, embedding=ebd)
+
+from src.services.rag_knowledge import RagKnowledge
+
+rag = RagKnowledge()
+
+print(rag.update_knowledge())
+text = "Who you are??"
+
+chunks = rag.retrive_chunk(text)
+
+print(chunks)
