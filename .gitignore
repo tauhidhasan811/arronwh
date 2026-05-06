@@ -10,5 +10,6 @@ wheels/
 # Virtual environments
 .venv
 
+*data/chroma_db
 .env
 .mp3

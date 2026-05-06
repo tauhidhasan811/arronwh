@@ -1,15 +1,16 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from src.services.data_processor import DataProcessor
+from src.config.config_chromadb import ChromaDB
 
-# Initialize the splitter
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=10,      # Target number of characters per chunk
-    chunk_overlap=1,    # Number of characters to repeat from the previous chunk
-    length_function=len,
-    separators=[ " ", "", "\n\n", "\n"] # Hierarchical separators
-)
+path = r'data\files\YoloHeat Company Guide.docx'
 
-# Split your text
-text = "Your long document text here..."
-chunks = text_splitter.split_text(text)
+chunk = DataProcessor.create_chunk(path)
 
-print(chunks)
+data = ["hi !! how are you??"]
+
+ebd = DataProcessor.embedde_sentence(data)
+print(ebd.shape)
+# print(chunk)
+
+chroma_db = ChromaDB()
+
+chroma_db.store_knowledge(chunk=data, embedding=ebd)
