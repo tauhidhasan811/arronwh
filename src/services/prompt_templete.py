@@ -8,7 +8,8 @@ class PromptGenerator:
     def output_templete():
         # Fixed string formatting and removed unnecessary concatenation
         return (
-            "response use proper html tag like <p>, <tb>, <tr>, and also can use twiliw css. "
+            "text will be short do not describe so long."
+            "response use proper html tag like <p>, <tb>, <tr>, bold , italic "
             "do not use h1 or h2 like big tag"
         )
 
@@ -46,6 +47,7 @@ class PromptGenerator:
             content=(
                 "You are an assistant of the boiler company. "
                 "Your task is to analyze tools data based on user query."
+                f"follow this template {PromptGenerator.output_templete()}"
             )
         )
 
