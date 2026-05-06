@@ -21,8 +21,10 @@
 # chroma_db.store_knowledge(chunk=data, embedding=ebd)
 
 from src.services.rag_knowledge import RagKnowledge
+from src.config.config_embedding_model import Embedder
 
-rag = RagKnowledge()
+embedder = Embedder().hugg_sentence_embedder()
+rag = RagKnowledge(embedding_model=embedder)
 
 print(rag.update_knowledge())
 text = "Who you are??"
