@@ -2,7 +2,8 @@ import re
 from docx import Document
 from typing import List, Dict
 from api.schemas.chat_body import ChatHistoryItem
-from src.config.config_embedding_model import Embedder
+# from src.config.config_embedding_model import Embedder
+from sentence_transformers import SentenceTransformer
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 class DataProcessor:
     @staticmethod
@@ -66,14 +67,14 @@ class DataProcessor:
 
 
     @staticmethod
-    def embedde_sentence(sentences: List):
+    def embedde_sentence(sentences: List, ebd_model: SentenceTransformer):
 
         print(type(sentences))
         if type(sentences) is not list:
             print("Data type is not list")
             sentences = [sentences]
         embedding= []
-        ebd_model = Embedder().hugg_sentence_embedder()
+        # ebd_model = Embedder().hugg_sentence_embedder()
         if __name__ == '__main__':
             pool = ebd_model.start_multi_process_pool()
             # embedding = ebd_model.encode(sentences)
