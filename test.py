@@ -1,32 +1,34 @@
-# import json
-# import requests
+# import time 
 
-# url = 'https://arronwh-backend.onrender.com/api/v1/service?sortBy=createdAt&limit=10&page=1' 
+# from src.services.data_processor import DataProcessor
+# from src.config.config_chromadb import ChromaDB
+# from src.services.delete_path import force_delete_folder
 
-# response = requests.get(url)
+# path = r'data\files\YoloHeat Company Guide.docx'
 
-# # print(response.json())
+# chunk = DataProcessor.create_chunk(path)
 
-# with open('data/json/service_data.json', 'w', encoding='utf-8') as f:
-#     json.dump(response.json(), f, indent=4)
+# data = ["hi !! how are you??"]
 
-# from src.db.db_queries import DbQueries
-# from src.hyper_parameters import params
+# ebd = DataProcessor.embedde_sentence(data)
+# print(ebd.shape)
+# # print(chunk)
 
-# db = DbQueries()
+# force_delete_folder(path = 'data/chroma_db')
+# time.sleep(30)
+# chroma_db = ChromaDB()
 
-# # data = db.GetAllField(collection_name="products", exclude_field=['_id', 'user', 'images', 'featureInformation.featureLogo', 'includedImages', 'createdAt', 'updatedAt', 'boilerInstallationGuide.image', '__v'])
+# chroma_db.store_knowledge(chunk=data, embedding=ebd)
 
-# # print(list(data))
-# exclude = {}
-# exclude_field = params['collections']['products']['exclude_field']
-# for f in exclude_field:
-#     exclude.update({f:0})
-# data = db.GetDataByFilter('products',exclude_data=exclude, _id = '69d86b535fbdf0e7994ac679', payablePrice = 950)
-# print(list(data))
+from src.services.rag_knowledge import RagKnowledge
+from src.config.config_embedding_model import Embedder
 
-from src.tools.database_tools import GetAllData
+embedder = Embedder().hugg_sentence_embedder()
+rag = RagKnowledge(embedding_model=embedder)
 
-data = GetAllData(collection_name='extras')
-print(data)
+print(rag.update_knowledge())
+text = "Who you are??"
 
+chunks = rag.retrive_chunk(text)
+
+print(chunks)

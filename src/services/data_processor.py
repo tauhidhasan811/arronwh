@@ -1,7 +1,10 @@
 import re
+from docx import Document
 from typing import List, Dict
 from api.schemas.chat_body import ChatHistoryItem
-
+# from src.config.config_embedding_model import Embedder
+from sentence_transformers import SentenceTransformer
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 class DataProcessor:
     @staticmethod
     def CleanData(text):
@@ -35,3 +38,48 @@ class DataProcessor:
 
         return list(reversed(selected_chat))
     
+    @staticmethod
+    def read_docx(file_path):
+        document = Document(file_path)
+        text = []
+        para_num = 0
+        for paragraph in document.paragraphs:
+            text.append(paragraph.text)
+            para_num += 1
+        print(f"Total number of paragraph : {para_num}")
+        return '\n'.join(text)
+    
+
+    @staticmethod
+    def create_chunk(file_path: str, chunk_size=300, chunk_overlap = 50):
+        if not file_path.endswith(".docx"):
+            return ValueError("Only accepted docx type")
+        docs_data = DataProcessor.read_docx(file_path=file_path)
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=chunk_size,      # Target number of characters per chunk
+            chunk_overlap=chunk_overlap,    # Number of characters to repeat from the previous chunk
+            length_function=len,
+            separators=[ " ", "", "\n\n", "\n"] # Hierarchical separators
+        )
+        chunks = text_splitter.split_text(docs_data)
+
+        return chunks
+
+
+    @staticmethod
+    def embedde_sentence(sentences: List, ebd_model: SentenceTransformer):
+
+        print(type(sentences))
+        if type(sentences) is not list:
+            print("Data type is not list")
+            sentences = [sentences]
+        embedding= []
+        # ebd_model = Embedder().hugg_sentence_embedder()
+        if __name__ == '__main__':
+            pool = ebd_model.start_multi_process_pool()
+            # embedding = ebd_model.encode(sentences)
+            embedding = ebd_model.encode_multi_process(sentences, pool)
+            ebd_model.stop_multi_process_pool(pool)
+        if not embedding:
+            embedding = ebd_model.encode(sentences)
+        return embedding

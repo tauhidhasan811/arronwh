@@ -11,7 +11,7 @@ class Body(BaseModel):
 @tool
 def GetAllData(body: Body):
     """Extract data like three collection where one cluster name is "products" wherehave boiler
-    secound one is "controllers" where there are boiler controllers
+    secound one is "boilercontrollers" where there are boiler controllers
     third one is "extras" where there are extra items"""
     collection_name = body.collection_name
 
@@ -31,9 +31,11 @@ def GetAllData(body: Body):
     return data
 
 def GetSelectedData(collection_name, **kwargs):
-    """Extract data like three collection where one cluster name is products wherehave boilder fileds are " _id, payablePrice 
-    secound one is controllers where there are boiler controllers
-    third one is extras where there are extra items"""
+    """Extract data like four collection 
+    where one cluster name is products wherehave boilder  
+    secound one is boilercontrollers where there are boiler controllers and collection name is "boilercontrollers"
+    third one is extras where there are extra items
+    and also services collection where have which spacific sevice we peovide """
 
     
     db = DbQueries()

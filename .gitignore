@@ -5,9 +5,11 @@ build/
 dist/
 wheels/
 *.egg-info
+*.csv
 
 # Virtual environments
 .venv
 
+*data/chroma_db
 .env
 .mp3
