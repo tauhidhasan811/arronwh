@@ -22,7 +22,7 @@ class PromptGenerator:
                 "Provide accurate, concise, and relevant answers. "
                 "Do not hallucinate or make up information. "
                 "If the question is outside the scope of boilers, boiler controllers, or related products, politely respond with a brief apology and state that you can only assist with company-related products. "
-                f"follow this template {PromptGenerator.output_templete()}"
+                # f"follow this template {PromptGenerator.output_templete()}"
             )
         )
 
@@ -47,7 +47,7 @@ class PromptGenerator:
             content=(
                 "You are an assistant of the boiler company. "
                 "Your task is to analyze tools data based on user query."
-                f"follow this template {PromptGenerator.output_templete()}"
+            # f"follow this template {PromptGenerator.output_templete()}"
             )
         )
 
