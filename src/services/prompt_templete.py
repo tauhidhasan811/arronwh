@@ -9,7 +9,7 @@ class PromptGenerator:
         # Fixed string formatting and removed unnecessary concatenation
         return (
             "text will be short do not describe so long."
-            "response use proper html tag like <p>, <tb>, <tr>, <ul>, <li>, bold , italic "
+            "response use proper html tag like <p>, <tb>, <tr>, <ul>, <li>,<a>, <img>, bold , italic "
             "do not use h1 or h2 like big tag"
         )
 
@@ -49,7 +49,7 @@ class PromptGenerator:
                 "You are an assistant of the boiler company. "
                 "Your task is to analyze tools data based on user query."
                 # "text will be short do not describe so long."
-            # f"follow this template {PromptGenerator.output_templete()}"
+            f"follow this template {PromptGenerator.output_templete()}"
             )
         )
 
