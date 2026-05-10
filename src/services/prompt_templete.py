@@ -9,7 +9,7 @@ class PromptGenerator:
         # Fixed string formatting and removed unnecessary concatenation
         return (
             "text will be short do not describe so long."
-            "response use proper html tag like <p>, <tb>, <tr>, bold , italic "
+            "response use proper html tag like <p>, <tb>, <tr>, <ul>, <li>, bold , italic "
             "do not use h1 or h2 like big tag"
         )
 
@@ -23,7 +23,7 @@ class PromptGenerator:
                 "text will be short do not describe so long."
                 "Do not hallucinate or make up information. "
                 "If the question is outside the scope of boilers, boiler controllers, or related products, politely respond with a brief apology and state that you can only assist with company-related products. "
-                # f"follow this template {PromptGenerator.output_templete()}"
+                f"follow this template {PromptGenerator.output_templete()}"
             )
         )
 
