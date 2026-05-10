@@ -166,7 +166,7 @@ class AgenController:
             have_tools, content, tools_data = self.__get_agent_response(prompt=prompt)
 
             if have_tools:
-                yield "Analysing tools data...\n"
+                # yield "Analysing tools data...\n"
 
                 tools_prompt = self.promptGen.ToolsPrompt(
                     user_query=user_query,
