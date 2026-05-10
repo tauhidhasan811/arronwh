@@ -1,9 +1,11 @@
+import html
 import re
 from docx import Document
 from typing import List, Dict
 from api.schemas.chat_body import ChatHistoryItem
 # from src.config.config_embedding_model import Embedder
 from sentence_transformers import SentenceTransformer
+from src.services.data_processor import DataProcessor
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 class DataProcessor:
     @staticmethod
@@ -20,6 +22,7 @@ class DataProcessor:
         idx = 1
         for data in reversed(previous_data):
             prev = str(data)
+            prev = DataProcessor.clean_text(prev)
             current_token = len(prev)
             if token_count <= max_token or idx <= min_chat:
                 print(f"Current chat count : {idx} && token count: {token_count}")
@@ -64,6 +67,26 @@ class DataProcessor:
         chunks = text_splitter.split_text(docs_data)
 
         return chunks
+    
+    @staticmethod
+    def clean_text(text):
+        # Step 1: Remove all literal backslashes
+        cleaned = text.replace("\\", "")
+
+        # Step 2: Remove backticks (` or ``` )
+        cleaned = re.sub(r"`{1,3}", "", cleaned)
+
+        # Step 3: Remove HTML tags and decode HTML entities
+        cleaned = re.sub(r"<[^>]+>", " ", cleaned)
+        cleaned = html.unescape(cleaned)
+
+        # Step 4: Remove newlines and extra spaces
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned
+
+        
+
+
 
 
     @staticmethod
