@@ -5,13 +5,28 @@ from typing import List, Dict
 from api.schemas.chat_body import ChatHistoryItem
 # from src.config.config_embedding_model import Embedder
 from sentence_transformers import SentenceTransformer
-from src.services.data_processor import DataProcessor
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+
 class DataProcessor:
+
+
     @staticmethod
-    def CleanData(text):
-        
-        return
+    def clean_text(text):
+        # Step 1: Remove all literal backslashes
+        cleaned = text.replace("\\", "")
+
+        # Step 2: Remove backticks (` or ``` )
+        cleaned = re.sub(r"`{1,3}", "", cleaned)
+
+        # Step 3: Remove HTML tags and decode HTML entities
+        cleaned = re.sub(r"<[^>]+>", " ", cleaned)
+        cleaned = html.unescape(cleaned)
+
+        # Step 4: Remove newlines and extra spaces
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned
+
     
     @staticmethod
     def process_previous_history(previous_data:List[Dict]):
@@ -68,24 +83,6 @@ class DataProcessor:
 
         return chunks
     
-    @staticmethod
-    def clean_text(text):
-        # Step 1: Remove all literal backslashes
-        cleaned = text.replace("\\", "")
-
-        # Step 2: Remove backticks (` or ``` )
-        cleaned = re.sub(r"`{1,3}", "", cleaned)
-
-        # Step 3: Remove HTML tags and decode HTML entities
-        cleaned = re.sub(r"<[^>]+>", " ", cleaned)
-        cleaned = html.unescape(cleaned)
-
-        # Step 4: Remove newlines and extra spaces
-        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
-        return cleaned
-
-        
-
 
 
 
