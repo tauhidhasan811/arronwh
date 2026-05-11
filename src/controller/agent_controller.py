@@ -101,6 +101,30 @@ class AgenController:
         self.agent = ChatModels().GetChatModel()
         self.promptGen = PromptGenerator()
 
+    @staticmethod
+    def __is_quiz_start(user_query: str) -> bool:
+        normalized_query = " ".join((user_query or "").lower().split())
+        return normalized_query in {
+            "start quiz",
+            "start the quiz",
+            "begin quiz",
+            "begin the quiz",
+            "yes start quiz",
+            "yes start the quiz",
+        }
+
+    @staticmethod
+    def __first_quiz_question() -> str:
+        return (
+            "<p>Great! Let's start the quiz to help us recommend the best boiler for you.</p>"
+            "<p><b>Question 1:</b> Are you a homeowner or landlord?</p>"
+            "<ul>"
+            "<li>Homeowner</li>"
+            "<li>Landlord</li>"
+            "</ul>"
+            "<p>Please choose one option.</p>"
+        )
+
     def __call_agent(self, prompt):
         return self.agent.invoke(prompt)
 
@@ -163,6 +187,10 @@ class AgenController:
 
     async def get_response(self, user_query, relevent_info, previous_chat) -> AsyncIterable[str]:
         try:
+            if self.__is_quiz_start(user_query):
+                yield self.__first_quiz_question()
+                return
+
             prompt = self.promptGen.GeneralPrompt(
                 user_query=user_query,
                 relevent_info=relevent_info,

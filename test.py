@@ -1,24 +1,18 @@
-# import time 
+from langchain_openai import ChatOpenAI
+from src.hyper_parameters import params
+from src.tools.database_tools import GetAllData
+from typing import Any
 
-# from src.services.data_processor import DataProcessor
-# from src.config.config_chromadb import ChromaDB
-# from src.services.delete_path import force_delete_folder
 
-# path = r'data\files\YoloHeat Company Guide.docx'
+from dotenv import load_dotenv
+load_dotenv()
 
-# chunk = DataProcessor.create_chunk(path)
+config : dict[str: Any] = {
+    'model': params['model_name']
+    }
 
-# data = ["hi !! how are you??"]
+llm = ChatOpenAI( **config)
 
-# ebd = DataProcessor.embedde_sentence(data)
-# print(ebd.shape)
-# # print(chunk)
+print(llm.invoke("hi"))
 
-# force_delete_folder(path = 'data/chroma_db')
-# time.sleep(30)
-# chroma_db = ChromaDB()
-
-# chroma_db.store_knowledge(chunk=data, embedding=ebd)
-from src.tools.quote_tool import QuizTool
-
-print(QuizTool())
+    
