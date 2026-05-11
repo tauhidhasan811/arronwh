@@ -91,6 +91,7 @@ from collections.abc import AsyncIterable
 
 from src.config.config_chat_model import ChatModels
 from src.tools.database_tools import GetAllData
+from src.tools.quote_tool import QuizTool
 from src.services.prompt_templete import PromptGenerator
 
 
@@ -121,8 +122,10 @@ class AgenController:
         for tool in tools:
             name = tool["name"]
             args = tool["args"]
-
-            tool_result = GetAllData.invoke(args)
+            if name == "GetAllData":
+                tool_result = GetAllData.invoke(args)
+            elif name == "QuizTool":
+                tool_result = QuizTool.invoke(args)
 
             all_tools_data.append({
                 "tool_name": name,
@@ -167,11 +170,17 @@ class AgenController:
 
             if have_tools:
                 # yield "Analysing tools data...\n"
-
-                tools_prompt = self.promptGen.ToolsPrompt(
-                    user_query=user_query,
-                    tools_data=tools_data
-                )
+                if tools_data[0]['tool_name'] == "QuizTool":
+                    tools_prompt = self.promptGen.QuizToolsPrompt(
+                        user_query=user_query,
+                        tools_data=tools_data,
+                        previous_chat=previous_chat
+                    )
+                else:
+                    tools_prompt = self.promptGen.ToolsPrompt(
+                        user_query=user_query,
+                        tools_data=tools_data
+                    )
 
                 async for chunk in self.__call_agent_stream(prompt=tools_prompt):
                     yield chunk

@@ -24,6 +24,9 @@ class PromptGenerator:
                 "Do not hallucinate or make up information. "
                 "If the question is outside the scope of boilers, boiler controllers, or related products, politely respond with a brief apology and state that you can only assist with company-related products. "
                 f"follow this template {PromptGenerator.output_templete()}"
+                "if user want quote then they must attent the quiz. "
+                "one start a quiz then they must need to complete it utill they so stop the quiz."
+                "After compete the quiz ask them about there personal information"
             )
         )
 
@@ -55,6 +58,36 @@ class PromptGenerator:
 
         hum_message = HumanMessage(
             content=f'Current user Query: {user_query} \n\nTools data: {tools_data}'
+        )
+        
+        temp = PromptTemplate(template="System instruction: {sys_message}\n{hum_message}",
+                             input_variables=['sys_message', 'hum_message'])
+        
+        prompt = temp.invoke(
+            {
+                'sys_message': sys_message.content,
+                'hum_message': hum_message.content
+            }
+        )
+        return str(prompt)
+    
+    
+    @staticmethod   
+    def QuizToolsPrompt(user_query, tools_data: str, previous_chat: List[Dict]):
+        sys_message = SystemMessage(
+            content=(
+                "You are an assistant of the boiler company. "
+                "Your task is to analyze tools data based on user query."
+                # "text will be short do not describe so long."
+                "if user want quote then they must attent the quiz. "
+                "one start a quiz then they must need to complete it utill they so stop the quiz."
+                "After compete the quiz ask them aboout there personal information"
+            f"follow this template {PromptGenerator.output_templete()}"
+            )
+        )
+
+        hum_message = HumanMessage(
+            content=f'Current user Query: {user_query} \n Previous chat: {previous_chat} \n\nTools data: {tools_data}'
         )
         
         temp = PromptTemplate(template="System instruction: {sys_message}\n{hum_message}",
