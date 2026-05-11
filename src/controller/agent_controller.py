@@ -92,6 +92,7 @@ from collections.abc import AsyncIterable
 from src.config.config_chat_model import ChatModels
 from src.tools.database_tools import GetAllData
 from src.tools.quote_tool import QuizTool
+from src.tools.create_quote import CreateNewQuote
 from src.services.prompt_templete import PromptGenerator
 
 
@@ -126,6 +127,8 @@ class AgenController:
                 tool_result = GetAllData.invoke(args)
             elif name == "QuizTool":
                 tool_result = QuizTool.invoke(args)
+            elif name =="CreateNewQuote":
+                tool_result = CreateNewQuote.invoke(args)
 
             all_tools_data.append({
                 "tool_name": name,
@@ -172,6 +175,12 @@ class AgenController:
                 # yield "Analysing tools data...\n"
                 if tools_data[0]['tool_name'] == "QuizTool":
                     tools_prompt = self.promptGen.QuizToolsPrompt(
+                        user_query=user_query,
+                        tools_data=tools_data,
+                        previous_chat=previous_chat
+                    )
+                elif tools_data[0]['tool_name'] == "CreateNewQuote":
+                    tools_prompt = self.promptGen.CreateQuotePrompt(
                         user_query=user_query,
                         tools_data=tools_data,
                         previous_chat=previous_chat
