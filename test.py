@@ -19,16 +19,6 @@
 # chroma_db = ChromaDB()
 
 # chroma_db.store_knowledge(chunk=data, embedding=ebd)
+from src.tools.quote_tool import QuizTool
 
-from src.services.rag_knowledge import RagKnowledge
-from src.config.config_embedding_model import Embedder
-
-embedder = Embedder().hugg_sentence_embedder()
-rag = RagKnowledge(embedding_model=embedder)
-
-# print(rag.update_knowledge())
-text = "What service do you give??"
-
-chunks = rag.retrive_chunk(text)
-
-print(chunks)
+print(QuizTool())
