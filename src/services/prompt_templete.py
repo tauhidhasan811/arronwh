@@ -30,13 +30,14 @@ class PromptGenerator:
         return (
             "Write like a friendly human chat assistant. Keep responses concise, helpful, and easy to scan. "
             "Use user-friendly, professional emojis when they add warmth or clarity, such as 👍, ✅, 🔧, 🏠, or 📞. Keep emojis light and never use more than 1-2 per answer. "
-            "Use plain text for normal sentences. Do not wrap normal sentences in HTML tags. "
-            "For greetings, use one warm short sentence and ask how you can help. "
-            "For service questions, use a short intro sentence, then a <ul><li> list using only services found in RAG or tools data. "
-            "For purchase, quote, or price questions, use a short intro sentence, then a <ul><li> step list. "
-            "End helpful answers with one short follow-up question such as Was that helpful? or Is that what you were looking for? "
+            "Every response must be fully wrapped in HTML tags. Use <p> for normal sentences. "
+            "For greetings, use one warm short <p> and ask how you can help. "
+            "For service questions, use a short intro <p>, then a <ul><li> list using only services found in RAG or tools data. "
+            "For purchase, quote, or price questions, use a short intro <p>, then a <ul><li> step list. "
+            "End helpful answers with one short follow-up <p> such as Was that helpful? or Is that what you were looking for? "
             "Always format phone numbers as <a href=\"tel:08001234567\">0800 123 4567</a> and email addresses as <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. "
-            "Only use these HTML tags: <ul>, <li>, and <a>. Do not use <p>, <table>, <tr>, <td>, <h1>, <h2>, <b>, <strong>, <br>, or any other HTML tag. "
+            "Only use these HTML tags: <p>, <ul>, <li>, and <a>. Do not use <br>, <table>, <tr>, <td>, <h1>, <h2>, <b>, <strong>, or any other HTML tag. "
+            "Do not add unnecessary line breaks, blank lines, or <br> tags. Keep spacing clean and compact. "
         )
 
     @staticmethod   
@@ -51,7 +52,8 @@ class PromptGenerator:
                 "Use previous chat only as recent context; never let it override the latest user message. "
                 "If previous chat contains quote-page guidance, treat it as stale unless the current user query explicitly asks for a quote, purchase, order, installation booking, view boilers/products/options, or a personalised estimate. "
                 "Use RAG as supporting context only; do not copy irrelevant RAG text into the answer. "
-                "if file data are there then response on it is not read able is_read false then tell to send the customer support to make a proper document. "
+                "If file data is {'is_read': False, 'data': 'no data'}, ignore the file completely and answer only from the current user query, previous chat, RAG, and tools data. "
+                "Only use file data when is_read is True and data contains readable information relevant to the current user query. "
                 "The company provides boiler services only. Do not add services unless they appear in RAG or tools data. "
                 "Provide accurate, concise, and relevant answers that sound like a helpful person, not a script. "
                 "Do not mention the quote page for general questions, contact questions, boiler/controller information, or support questions. "
@@ -62,7 +64,7 @@ class PromptGenerator:
                 "For price questions, first use available RAG or tools data to give product prices when available. If no reliable price is available, say prices depend on the home and selected boiler and invite them to create their own quote. Do not invent prices. "
                 "If the user wants to view boilers, products, or personalised options, tell them to use the quote page because those options depend on their home details. "
                 "For service questions, answer with a short intro sentence followed by a <ul> list of boiler services from RAG or tools data only. "
-                "For contact questions, tell users they can call <a href=\"tel:08001234567\">0800 123 4567</a> or email <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. "
+                "For contact questions, tell users they can call <a href=\"tel:08001234567\">0800 123 4567</a> or email <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. Phone numbers and email addresses must always be inside <a> tags. "
                 "If the user has completed a quote or asks what happens after completing a quote, explain that the support team will contact them. "
                 # "text will be short do not describe so long."
                 "Do not hallucinate or make up information. "
@@ -103,14 +105,14 @@ class PromptGenerator:
                 "For service questions, answer with a short intro sentence followed by a <ul> list using only tools data. "
                 "For purchase, quote, or view-product questions, answer with a short intro and a <ul> step list. "
                 "For price questions, give prices from tools data when available. If no reliable price is available, invite the user to create their own quote. Do not invent prices. "
-                "Always format phone numbers as <a href=\"tel:08001234567\">0800 123 4567</a> and email addresses as <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. "
+                "Always format phone numbers as <a href=\"tel:08001234567\">0800 123 4567</a> and email addresses as <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. Phone numbers and email addresses must always be inside <a> tags. "
                 # "text will be short do not describe so long."
                 f"follow this template {PromptGenerator.output_templete()}"
             )
         )
 
         hum_message = HumanMessage(
-            content=f'Current user Query: {user_query} \n\nTools data: {tools_data}'
+            content=f'Current user query - answer this now: {user_query} \n\nTools data: {tools_data}'
         )
         
         temp = PromptTemplate(template="System instruction: {sys_message}\n{hum_message}",
