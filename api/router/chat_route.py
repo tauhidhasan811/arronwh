@@ -25,7 +25,7 @@ async def chat_with_ai(body: Chatbody):
 
     return StreamingResponse(agent_controller.get_response(user_query=user_query, 
                                                            relevent_info = relevent_info, 
-                                                           previous_chat=previous_chat), 
+                                                           previous_chat=selected_chat), 
                                                            media_type='text/event-stream')
 
 

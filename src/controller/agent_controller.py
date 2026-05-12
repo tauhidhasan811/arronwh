@@ -91,8 +91,6 @@ from collections.abc import AsyncIterable
 
 from src.config.config_chat_model import ChatModels
 from src.tools.database_tools import GetAllData
-from src.tools.quote_tool import QuizTool
-from src.tools.create_quote import CreateNewQuote
 from src.services.prompt_templete import PromptGenerator
 
 
@@ -100,30 +98,6 @@ class AgenController:
     def __init__(self):
         self.agent = ChatModels().GetChatModel()
         self.promptGen = PromptGenerator()
-
-    @staticmethod
-    def __is_quiz_start(user_query: str) -> bool:
-        normalized_query = " ".join((user_query or "").lower().split())
-        return normalized_query in {
-            "start quiz",
-            "start the quiz",
-            "begin quiz",
-            "begin the quiz",
-            "yes start quiz",
-            "yes start the quiz",
-        }
-
-    @staticmethod
-    def __first_quiz_question() -> str:
-        return (
-            "<p>Great! Let's start the quiz to help us recommend the best boiler for you.</p>"
-            "<p><b>Question 1:</b> Are you a homeowner or landlord?</p>"
-            "<ul>"
-            "<li>Homeowner</li>"
-            "<li>Landlord</li>"
-            "</ul>"
-            "<p>Please choose one option.</p>"
-        )
 
     def __call_agent(self, prompt):
         return self.agent.invoke(prompt)
@@ -149,10 +123,8 @@ class AgenController:
             args = tool["args"]
             if name == "GetAllData":
                 tool_result = GetAllData.invoke(args)
-            elif name == "QuizTool":
-                tool_result = QuizTool.invoke(args)
-            elif name =="CreateNewQuote":
-                tool_result = CreateNewQuote.invoke(args)
+            else:
+                continue
 
             all_tools_data.append({
                 "tool_name": name,
@@ -179,18 +151,14 @@ class AgenController:
         print("x" * 60)
 
         if tools:
-            have_tools = True
             tools_data = self.__get_tools_data(tools=tools)
+            have_tools = bool(tools_data)
 
         content = response.content
         return have_tools, content, tools_data
 
     async def get_response(self, user_query, relevent_info, previous_chat) -> AsyncIterable[str]:
         try:
-            if self.__is_quiz_start(user_query):
-                yield self.__first_quiz_question()
-                return
-
             prompt = self.promptGen.GeneralPrompt(
                 user_query=user_query,
                 relevent_info=relevent_info,
@@ -201,23 +169,10 @@ class AgenController:
 
             if have_tools:
                 # yield "Analysing tools data...\n"
-                if tools_data[0]['tool_name'] == "QuizTool":
-                    tools_prompt = self.promptGen.QuizToolsPrompt(
-                        user_query=user_query,
-                        tools_data=tools_data,
-                        previous_chat=previous_chat
-                    )
-                elif tools_data[0]['tool_name'] == "CreateNewQuote":
-                    tools_prompt = self.promptGen.CreateQuotePrompt(
-                        user_query=user_query,
-                        tools_data=tools_data,
-                        previous_chat=previous_chat
-                    )
-                else:
-                    tools_prompt = self.promptGen.ToolsPrompt(
-                        user_query=user_query,
-                        tools_data=tools_data
-                    )
+                tools_prompt = self.promptGen.ToolsPrompt(
+                    user_query=user_query,
+                    tools_data=tools_data
+                )
 
                 async for chunk in self.__call_agent_stream(prompt=tools_prompt):
                     yield chunk
