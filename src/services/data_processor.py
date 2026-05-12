@@ -30,28 +30,30 @@ class DataProcessor:
     
     @staticmethod
     def process_previous_history(previous_data:List[Dict]):
-        min_chat = 25
-        max_token = 1000
-        token_count = 0
+        max_chat = 8
+        max_chars = 3000
+        char_count = 0
         selected_chat = []
-        idx = 1
+        idx = 0
         for data in reversed(previous_data):
             prev = str(data)
             prev = DataProcessor.clean_text(prev)
-            current_token = len(prev)
-            if token_count <= max_token or idx <= min_chat:
-                print(f"Current chat count : {idx} && token count: {token_count}")
-                token_count += current_token
-                selected_chat.append(data.model_dump())
-                idx+=1
-            
-            else:
+            current_chars = len(prev)
+            if idx >= max_chat or char_count + current_chars > max_chars:
                 break
+
+            print(f"Current chat count : {idx + 1} && char count: {char_count}")
+            char_count += current_chars
+            if hasattr(data, "model_dump"):
+                selected_chat.append(data.model_dump())
+            else:
+                selected_chat.append(data)
+            idx += 1
         
         print('-' * 60)
         print(' ' * 10, 'Chat History process successfully.')
         print('-' * 60)
-        print(f"Total Number of token : {token_count}")
+        print(f"Total Number of chars : {char_count}")
         print(f"Total Chat taken      : {idx}")
 
         return list(reversed(selected_chat))
