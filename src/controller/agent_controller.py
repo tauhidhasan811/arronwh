@@ -157,12 +157,13 @@ class AgenController:
         content = response.content
         return have_tools, content, tools_data
 
-    async def get_response(self, user_query, relevent_info, previous_chat) -> AsyncIterable[str]:
+    async def get_response(self, user_query, relevent_info, previous_chat, file_data) -> AsyncIterable[str]:
         try:
             prompt = self.promptGen.GeneralPrompt(
                 user_query=user_query,
                 relevent_info=relevent_info,
-                previous_chat=previous_chat
+                previous_chat=previous_chat,
+                file_data=file_data
             )
 
             have_tools, content, tools_data = self.__get_agent_response(prompt=prompt)

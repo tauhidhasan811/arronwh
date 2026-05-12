@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,Form, File, UploadFile
+from typing import List, Dict
 from fastapi.responses import JSONResponse, StreamingResponse
 from api.schemas.chat_body import Chatbody
 from src.services.data_processor import DataProcessor
@@ -20,7 +21,7 @@ async def chat_with_ai(body: Chatbody):
     selected_chat = data_processor.process_previous_history(previous_data=previous_chat)
     user_query = body.user_query
     relevent_info = rag.retrive_chunk(user_query)
-    print(relevent_info)
+    # print(relevent_info)
     agent_controller = AgenController()
 
     return StreamingResponse(agent_controller.get_response(user_query=user_query, 
@@ -29,4 +30,22 @@ async def chat_with_ai(body: Chatbody):
                                                            media_type='text/event-stream')
 
 
+@router.post('/chatbot-with-file')
+async def chat_with_ai(previous_chat: List[Dict] = Form(
+                                                    [{"user_query": "str",
+                                                      "ai_response": "str"}]),
+                        user_query: str = Form(),
+                        file: UploadFile = File()):
+    
+    previous_chat = previous_chat
+    selected_chat = data_processor.process_previous_history(previous_data=previous_chat)
+    user_query = user_query
+    relevent_info = rag.retrive_chunk(user_query)
+    # print(relevent_info)
+    agent_controller = AgenController()
+
+    return StreamingResponse(agent_controller.get_response(user_query=user_query, 
+                                                           relevent_info = relevent_info, 
+                                                           previous_chat=selected_chat), 
+                                                           media_type='text/event-stream')
     return message
