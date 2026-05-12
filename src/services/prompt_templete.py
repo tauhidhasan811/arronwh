@@ -28,8 +28,13 @@ class PromptGenerator:
     def output_templete():
         # Fixed string formatting and removed unnecessary concatenation
         return (
-            "Write in a natural, friendly, human tone. Keep responses concise. Use one short <p> for simple answers. "
-            "Use <ul><li> only when listing multiple items, and <table><tr><td> only for comparisons. "
+            "Write like a friendly human chat assistant. Keep responses concise, helpful, and easy to scan. "
+            "For greetings, use one warm short <p> and ask how you can help. "
+            "For service questions, use a short intro <p>, then a <ul><li> list using only services found in RAG or tools data. "
+            "For purchase, quote, or price questions, use a short intro <p>, then a <ul><li> step list. "
+            "End helpful answers with one short follow-up question such as <p>Was that helpful?</p> or <p>Is that what you were looking for?</p>. "
+            "Use <table><tr><td> only for comparisons. "
+            "Always format phone numbers as <a href=\"tel:08001234567\">0800 123 4567</a> and email addresses as <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. "
             "Do not use h1 or h2. "
         )
 
@@ -44,11 +49,16 @@ class PromptGenerator:
                 "Use previous chat only as recent context; never let it override the latest user message. "
                 "If previous chat contains Online Quote Tool guidance, treat it as stale unless the current user query explicitly asks for a quote, purchase, order, installation booking, or price estimate. "
                 "Use RAG as supporting context only; do not copy irrelevant RAG text into the answer. "
+                "The company provides boiler services only. Do not add services unless they appear in RAG or tools data. "
                 "Provide accurate, concise, and relevant answers that sound like a helpful person, not a script. "
                 "Do not mention the Online Quote Tool for general questions, contact questions, product browsing, boiler/controller information, or support questions. "
                 "Only mention the Online Quote Tool when the user explicitly asks to get a quote, buy, purchase, order, book an installation, or request a price estimate. "
                 "When the quote tool is relevant, provide this link once: <a href=\"https://arronwh-website.vercel.app/boilers/property-overview\" target=\"_blank\"><b>Start Online Quote Tool</b></a>. "
-                "For contact questions, tell users they can call 0800 123 4567 or email hello@yoloheat.co.uk. "
+                "For buy or purchase questions, explain that it is simple: start with the Online Quote Tool, answer a few questions, compare suitable boiler options, choose an installation date if available, then the support team will contact them after quote completion. "
+                "For quote questions, explain that the user can get a personalised quote online by answering a few questions about their home, then the support team will contact them after completion. "
+                "For price questions, explain that prices depend on the home and selected boiler, so the best way to see an accurate price is to complete the Online Quote Tool. Do not invent prices. "
+                "For service questions, answer with a short intro sentence followed by a <ul> list of boiler services from RAG or tools data only. "
+                "For contact questions, tell users they can call <a href=\"tel:08001234567\">0800 123 4567</a> or email <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. "
                 "If the user has completed a quote or asks what happens after completing a quote, explain that the support team will contact them. "
                 # "text will be short do not describe so long."
                 "Do not hallucinate or make up information. "
@@ -82,7 +92,11 @@ class PromptGenerator:
             content=(
                 "You are an assistant of the boiler company. "
                 "Your task is to answer the current user query using only relevant tools data. "
+                "The company provides boiler services only. Do not add services unless they appear in tools data. "
                 "Do not mention the Online Quote Tool unless the current user query explicitly asks for a quote, purchase, order, installation booking, or price estimate. "
+                "For service questions, answer with a short intro sentence followed by a <ul> list using only tools data. "
+                "For purchase, quote, or price questions, answer with a short intro and a <ul> step list. Do not invent prices. "
+                "Always format phone numbers as <a href=\"tel:08001234567\">0800 123 4567</a> and email addresses as <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. "
                 # "text will be short do not describe so long."
                 f"follow this template {PromptGenerator.output_templete()}"
             )
