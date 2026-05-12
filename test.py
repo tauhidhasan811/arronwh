@@ -1,18 +1,15 @@
-from langchain_openai import ChatOpenAI
-from src.hyper_parameters import params
-from src.tools.database_tools import GetAllData
-from typing import Any
+# from src.config.config_audio_model import OpenAIAudio
+# from dotenv import load_dotenv
 
+# load_dotenv()
+# model = OpenAIAudio()
 
-from dotenv import load_dotenv
-load_dotenv()
+path = r"data\files\Battle Symphony (Official Lyric Video) - Linkin Park.mp3"
 
-config : dict[str: Any] = {
-    'model': params['model_name']
-    }
+# text = model.ConvertToText(path)
+# print(text)
+from src.services.data_processor import DataProcessor
 
-llm = ChatOpenAI( **config)
+data = DataProcessor.file_reader_route(path)
 
-print(llm.invoke("hi"))
-
-    
+print(data)

@@ -1,5 +1,6 @@
 import html
 import re
+import fitz
 from docx import Document
 from typing import List, Dict
 from api.schemas.chat_body import ChatHistoryItem
@@ -69,6 +70,48 @@ class DataProcessor:
         print(f"Total number of paragraph : {para_num}")
         return '\n'.join(text)
     
+    @staticmethod
+    def read_pdf(pdf_path: str):
+        doc = fitz.open(pdf_path)
+
+        extracted_text = ""
+        for page_index, page in enumerate(doc):
+            text = page.get_text().strip()
+            if text:
+                extracted_text += f"\n--- Page {page_index + 1} ---\n{text}"
+
+        return extracted_text
+    
+
+
+    @staticmethod
+    def file_reader_route(path:str):
+        if path.endswith('.pdf'):
+            data = {
+                "is_read": True, 
+                "data": DataProcessor.read_pdf(path)
+            }
+            
+        elif path.endswith('.pdf'):
+            data = {
+                "is_read": True, 
+                "data": DataProcessor.read_docx(path)
+            }
+        
+        
+        else:
+            data = {
+                "is_read": False, 
+                "data": f"I can not read {path.split('.')[-1]}"
+            }
+            
+        
+        return data
+
+
+
+
+
 
     @staticmethod
     def create_chunk(file_path: str, chunk_size=300, chunk_overlap = 50):

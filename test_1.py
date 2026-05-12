@@ -1,38 +1,18 @@
-# import asyncio
-# import httpx
+from langchain_openai import ChatOpenAI
+from src.hyper_parameters import params
+from src.tools.database_tools import GetAllData
+from typing import Any
 
-# async def main():
-#     async with httpx.AsyncClient(timeout=None) as client:
-#         async with client.stream("GET", "http://127.0.0.1:8000/api/get") as response:
-#             async for line in response.aiter_lines():
-#                 print(line, flush=True)
 
-# asyncio.run(main())
+from dotenv import load_dotenv
+load_dotenv()
 
-import asyncio
-import httpx
+config : dict[str: Any] = {
+    'model': params['model_name']
+    }
 
-async def main():
-    payload = {
-        "previous_chat": [
-            {
-                "user_query": "give me price",
-                "ai_response": "Thank you for your query. Could you please specify which product you are interested in—boilers, controllers, or any specific model or accessory? This will help me provide you with the accurate price information."
-            }
-        ],
-        "user_query": "controllers"
-        }
+llm = ChatOpenAI( **config)
 
-    async with httpx.AsyncClient(timeout=None) as client:
-        async with client.stream(
-            "POST",
-            # "http://127.0.0.1:8000/api/ai/chatbot",
-            "http://72.62.213.212:8000/api/ai/chatbot",
-            # "https://arronwh.onrender.com/api/ai/chatbot",
-            json=payload
-        ) as response:
-            async for line in response.aiter_lines():
-                if line:
-                    print(line, flush=True)
+print(llm.invoke("hi"))
 
-asyncio.run(main())
+    
