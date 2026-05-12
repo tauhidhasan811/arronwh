@@ -30,8 +30,8 @@ class DataProcessor:
     
     @staticmethod
     def process_previous_history(previous_data:List[Dict]):
-        max_chat = 8
-        max_chars = 3000
+        max_chat = 10
+        max_chars = 2000
         char_count = 0
         selected_chat = []
         idx = 0

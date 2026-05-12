@@ -29,13 +29,13 @@ class PromptGenerator:
         # Fixed string formatting and removed unnecessary concatenation
         return (
             "Write like a friendly human chat assistant. Keep responses concise, helpful, and easy to scan. "
-            "For greetings, use one warm short <p> and ask how you can help. "
-            "For service questions, use a short intro <p>, then a <ul><li> list using only services found in RAG or tools data. "
-            "For purchase, quote, or price questions, use a short intro <p>, then a <ul><li> step list. "
-            "End helpful answers with one short follow-up question such as <p>Was that helpful?</p> or <p>Is that what you were looking for?</p>. "
-            "Use <table><tr><td> only for comparisons. "
+            "Use plain text for normal sentences. Do not wrap normal sentences in HTML tags. "
+            "For greetings, use one warm short sentence and ask how you can help. "
+            "For service questions, use a short intro sentence, then a <ul><li> list using only services found in RAG or tools data. "
+            "For purchase, quote, or price questions, use a short intro sentence, then a <ul><li> step list. "
+            "End helpful answers with one short follow-up question such as Was that helpful? or Is that what you were looking for? "
             "Always format phone numbers as <a href=\"tel:08001234567\">0800 123 4567</a> and email addresses as <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. "
-            "Do not use h1 or h2. "
+            "Only use these HTML tags: <ul>, <li>, and <a>. Do not use <p>, <table>, <tr>, <td>, <h1>, <h2>, <b>, <strong>, <br>, or any other HTML tag. "
         )
 
     @staticmethod   
@@ -53,7 +53,7 @@ class PromptGenerator:
                 "Provide accurate, concise, and relevant answers that sound like a helpful person, not a script. "
                 "Do not mention the Online Quote Tool for general questions, contact questions, product browsing, boiler/controller information, or support questions. "
                 "Only mention the Online Quote Tool when the user explicitly asks to get a quote, buy, purchase, order, book an installation, or request a price estimate. "
-                "When the quote tool is relevant, provide this link once: <a href=\"https://arronwh-website.vercel.app/boilers/property-overview\" target=\"_blank\"><b>Start Online Quote Tool</b></a>. "
+                "When the quote tool is relevant, provide this link once: <a href=\"https://arronwh-website.vercel.app/boilers/property-overview\" target=\"_blank\">Start Online Quote Tool</a>. "
                 "For buy or purchase questions, explain that it is simple: start with the Online Quote Tool, answer a few questions, compare suitable boiler options, choose an installation date if available, then the support team will contact them after quote completion. "
                 "For quote questions, explain that the user can get a personalised quote online by answering a few questions about their home, then the support team will contact them after completion. "
                 "For price questions, explain that prices depend on the home and selected boiler, so the best way to see an accurate price is to complete the Online Quote Tool. Do not invent prices. "
