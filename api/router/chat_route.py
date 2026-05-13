@@ -81,3 +81,16 @@ async def chat_with_ai(previous_chat: str = Form(),
     except Exception as ex:
          
          return StreamingResponse(str(ex))
+    
+    
+@router.post('/chatbot-initial-message')
+async def chat_with_ai():
+    try:
+        
+        agent_controller = AgenController()
+
+        return StreamingResponse(agent_controller.get_response(), media_type='text/event-stream')
+    
+    except Exception as ex:
+         
+         return StreamingResponse(str(ex))

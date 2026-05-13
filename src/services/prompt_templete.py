@@ -126,3 +126,25 @@ class PromptGenerator:
             }
         )
         return str(prompt)
+
+
+
+    @staticmethod   
+    def InitialPrompt():
+        sys_message = SystemMessage(
+            content=(
+                "You are an assistant of the boiler company Name Yolo Heat. "
+                "Your task just give a greating message to user for welcome to the websitechat box"
+            
+                f"follow this template {PromptGenerator.output_templete()}"
+            )
+        )
+
+        temp = PromptTemplate(template="System instruction: {sys_message}")
+        
+        prompt = temp.invoke(
+            {
+                'sys_message': sys_message.content
+            }
+        )
+        return str(prompt)
