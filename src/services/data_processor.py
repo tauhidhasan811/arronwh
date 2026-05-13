@@ -92,7 +92,7 @@ class DataProcessor:
                 "data": DataProcessor.read_pdf(path)
             }
             
-        elif path.endswith('.pdf'):
+        elif path.endswith('.docx'):
             data = {
                 "is_read": True, 
                 "data": DataProcessor.read_docx(path)
