@@ -148,3 +148,40 @@ class PromptGenerator:
             }
         )
         return str(prompt)
+    
+    @staticmethod
+    def VoiceAgentPrompt(user_query: str, quote_data, previous_chat: List[Dict]):
+        compact_chat = PromptGenerator._compact_previous_chat(previous_chat)
+        sys_message = SystemMessage(
+            content=(
+                "You are a warm, natural voice assistant for Yolo Heat. "
+                "The user previously created a boiler quote but has not purchased yet. "
+                "Your job is to follow up, understand their concern, answer questions using the quote data, "
+                "and gently help them continue with the purchase or installation booking. "
+                "Use the recent conversation only for context and always prioritize the latest user message. "
+                "Keep the response short enough to speak clearly in a phone call. "
+                "Do not use HTML tags, markdown, bullet points, or emojis because this response will be converted to speech. "
+                "Do not invent prices, dates, discounts, guarantees, or product details that are not present in the quote data. "
+                "If the user is ready to proceed, tell them the support team can help finalize the quote and purchase. "
+                "If they ask for contact details, say they can call 0800 123 4567 or email hello@yoloheat.co.uk. "
+            )
+        )
+
+        hum_message = HumanMessage(
+            content=(
+                f"Current user voice message - answer this now: {user_query}"
+                f"\n\nQuote data: {quote_data}"
+                f"\n\nRecent voice conversation context only: {compact_chat}"
+            )
+        )
+
+        temp = PromptTemplate(template="System instruction: {sys_message}\n{hum_message}",
+                             input_variables=['sys_message', 'hum_message'])
+
+        prompt = temp.invoke(
+            {
+                'sys_message': sys_message.content,
+                'hum_message': hum_message.content
+            }
+        )
+        return str(prompt)
