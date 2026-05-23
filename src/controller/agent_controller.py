@@ -91,6 +91,7 @@ from collections.abc import AsyncIterable
 
 from src.config.config_chat_model import ChatModels
 from src.tools.database_tools import GetAllData
+from src.tools.user_contact_info import SaveUserContactInfo
 from src.services.prompt_templete import PromptGenerator
 
 
@@ -123,6 +124,8 @@ class AgenController:
             args = tool["args"]
             if name == "GetAllData":
                 tool_result = GetAllData.invoke(args)
+            elif name == "SaveUserContactInfo":
+                tool_result = SaveUserContactInfo.invoke(args)
             else:
                 continue
 
