@@ -24,8 +24,11 @@ def SaveUserContactInfo(body: Body):
     payload = body.model_dump()
     response = requests.post(url, data=payload)
     response = response.json()['success']
+    print(response)
     if response:
-        return "Your contact information has been saved successfully and our customer support will contact with you very soon."
+        message =  "Your contact information has been saved successfully and our customer support will contact with you very soon."
     else:
-        return "Sorry, there was an error saving your contact information. Please try again later."
+        message= "Sorry, there was an error saving your contact information. Please try again later."
     
+    print(message)
+    return message
