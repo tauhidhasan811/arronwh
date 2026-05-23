@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.router.chat_route import router as chat_router
-from api.router.voice_route import router as voice_router
+from api.router.voice_route import router as voice_router, twilio_stream_router
 
 
 
@@ -18,3 +18,4 @@ app.add_middleware(
 )
 app.include_router(chat_router)
 app.include_router(voice_router)
+app.include_router(twilio_stream_router)
