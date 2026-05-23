@@ -1,5 +1,9 @@
 import time
+import wave
+from base64 import b64encode
 from dataclasses import dataclass, field
+from io import BytesIO
+from struct import pack, unpack_from
 from typing import Any
 
 from openai import AsyncOpenAI
@@ -90,6 +94,27 @@ class QuoteFollowUpVoiceAgent:
         audio_output = await self._text_to_speech(answer_text)
         return audio_output, transcript, answer_text
 
+    async def handle_twilio_voice_follow_up(
+        self,
+        *,
+        audio_mulaw_bytes: bytes,
+        quote_data: Any,
+        previous_chat: list[dict[str, str]],
+    ) -> tuple[str, str, str]:
+        wav_audio = self._twilio_mulaw_to_wav(audio_mulaw_bytes)
+        transcript = await self._transcribe_audio(
+            audio_bytes=wav_audio,
+            filename="twilio-input.wav",
+            content_type="audio/wav",
+        )
+        answer_text = await self._get_contextual_answer(
+            user_query=transcript,
+            quote_data=quote_data,
+            previous_chat=previous_chat,
+        )
+        twilio_audio = await self._text_to_twilio_mulaw(answer_text)
+        return twilio_audio, transcript, answer_text
+
     async def _transcribe_audio(
         self,
         *,
@@ -118,11 +143,95 @@ class QuoteFollowUpVoiceAgent:
         response = await run_in_threadpool(self.chat_model.invoke, prompt)
         return str(getattr(response, "content", response)).strip()
 
-    async def _text_to_speech(self, text: str) -> bytes:
+    async def _text_to_speech(self, text: str, *, response_format: str = "mp3") -> bytes:
         response = await self.client.audio.speech.create(
             model=self.speech_model,
             voice=self.voice,
             input=text,
-            response_format="mp3",
+            response_format=response_format,
         )
         return response.read()
+
+    async def _text_to_twilio_mulaw(self, text: str) -> str:
+        pcm_24khz = await self._text_to_speech(text, response_format="pcm")
+        pcm_8khz = _resample_pcm16_mono(pcm_24khz, source_rate=24000, target_rate=8000)
+        mulaw_audio = _pcm16_to_mulaw(pcm_8khz)
+        return b64encode(mulaw_audio).decode("ascii")
+
+    @staticmethod
+    def _twilio_mulaw_to_wav(audio_mulaw_bytes: bytes) -> bytes:
+        pcm_audio = _mulaw_to_pcm16(audio_mulaw_bytes)
+        wav_buffer = BytesIO()
+        with wave.open(wav_buffer, "wb") as wav_file:
+            wav_file.setnchannels(1)
+            wav_file.setsampwidth(2)
+            wav_file.setframerate(8000)
+            wav_file.writeframes(pcm_audio)
+        return wav_buffer.getvalue()
+
+
+def _mulaw_to_pcm16(mulaw_audio: bytes) -> bytes:
+    pcm = bytearray()
+    for byte in mulaw_audio:
+        value = (~byte) & 0xFF
+        sign = value & 0x80
+        exponent = (value >> 4) & 0x07
+        mantissa = value & 0x0F
+        sample = ((mantissa << 3) + 0x84) << exponent
+        sample -= 0x84
+        if sign:
+            sample = -sample
+        pcm.extend(pack("<h", sample))
+    return bytes(pcm)
+
+
+def _pcm16_to_mulaw(pcm_audio: bytes) -> bytes:
+    bias = 0x84
+    clip = 32635
+    mulaw = bytearray()
+    sample_count = len(pcm_audio) // 2
+
+    for index in range(sample_count):
+        sample = unpack_from("<h", pcm_audio, index * 2)[0]
+        sign = 0x80 if sample < 0 else 0
+        if sample < 0:
+            sample = -sample
+        sample = min(sample, clip) + bias
+        exponent = min(max(sample.bit_length() - 8, 0), 7)
+        mantissa = (sample >> (exponent + 3)) & 0x0F
+        mulaw.append((~(sign | (exponent << 4) | mantissa)) & 0xFF)
+
+    return bytes(mulaw)
+
+
+def _resample_pcm16_mono(
+    pcm_audio: bytes,
+    *,
+    source_rate: int,
+    target_rate: int,
+) -> bytes:
+    if source_rate == target_rate:
+        return pcm_audio
+
+    samples = [
+        unpack_from("<h", pcm_audio, index)[0]
+        for index in range(0, len(pcm_audio) - 1, 2)
+    ]
+    if not samples:
+        return b""
+
+    target_length = max(1, round(len(samples) * target_rate / source_rate))
+    if target_length == 1:
+        return pack("<h", samples[0])
+
+    ratio = source_rate / target_rate
+    output = bytearray()
+    for target_index in range(target_length):
+        source_position = target_index * ratio
+        left_index = int(source_position)
+        right_index = min(left_index + 1, len(samples) - 1)
+        fraction = source_position - left_index
+        sample = round(samples[left_index] * (1 - fraction) + samples[right_index] * fraction)
+        output.extend(pack("<h", sample))
+
+    return bytes(output)
