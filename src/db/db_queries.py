@@ -27,19 +27,19 @@ class DbQueries:
             return data
         
         data = collection.find({}).to_list()
-        print('Data are : ',data)
+        # print('Data are : ',data)
         return data
     
     def GetDataByFilter(self, collection_name, exclude_field, **kwargs):
         filter = {}
-        print(f'Collection Name : {collection_name}')
+        # print(f'Collection Name : {collection_name}')
         collection = self.db[collection_name]
         for key, value in kwargs.items():
             if key == "_id":
                 f = {'_id': ObjectId(value)}
             else:
                 f = {key: value}
-                print(f)
+                # print(f)
             filter.update(f)
         
         # print(f"filter -----> {filter}")

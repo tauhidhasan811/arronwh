@@ -1,6 +1,7 @@
 from langchain_openai import ChatOpenAI
 from src.hyper_parameters import params
 from src.tools.database_tools import GetAllData
+from src.tools.user_contact_info import SaveUserContactInfo
 from typing import Any
 
 class ChatModels:
@@ -26,5 +27,5 @@ class ChatModels:
 
     def GetChatModel(self, **kwargs):
         llm = self.__config_llm(**kwargs)
-        llm_with_tools = llm.bind_tools([GetAllData])
+        llm_with_tools = llm.bind_tools([GetAllData, SaveUserContactInfo])
         return llm_with_tools

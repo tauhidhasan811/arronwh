@@ -43,7 +43,7 @@ class DataProcessor:
             if idx >= max_chat or char_count + current_chars > max_chars:
                 break
 
-            print(f"Current chat count : {idx + 1} && char count: {char_count}")
+            # print(f"Current chat count : {idx + 1} && char count: {char_count}")
             char_count += current_chars
             if hasattr(data, "model_dump"):
                 selected_chat.append(data.model_dump())
@@ -51,11 +51,11 @@ class DataProcessor:
                 selected_chat.append(data)
             idx += 1
         
-        print('-' * 60)
-        print(' ' * 10, 'Chat History process successfully.')
-        print('-' * 60)
-        print(f"Total Number of chars : {char_count}")
-        print(f"Total Chat taken      : {idx}")
+        # print('-' * 60)
+        # print(' ' * 10, 'Chat History process successfully.')
+        # print('-' * 60)
+        # print(f"Total Number of chars : {char_count}")
+        # print(f"Total Chat taken      : {idx}")
 
         return list(reversed(selected_chat))
     
@@ -67,7 +67,7 @@ class DataProcessor:
         for paragraph in document.paragraphs:
             text.append(paragraph.text)
             para_num += 1
-        print(f"Total number of paragraph : {para_num}")
+        # print(f"Total number of paragraph : {para_num}")
         return '\n'.join(text)
     
     @staticmethod
@@ -134,9 +134,9 @@ class DataProcessor:
     @staticmethod
     def embedde_sentence(sentences: List, ebd_model: SentenceTransformer):
 
-        print(type(sentences))
+        # print(type(sentences))
         if type(sentences) is not list:
-            print("Data type is not list")
+            # print("Data type is not list")
             sentences = [sentences]
         embedding= []
         # ebd_model = Embedder().hugg_sentence_embedder()

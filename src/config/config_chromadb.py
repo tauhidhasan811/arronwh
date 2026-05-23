@@ -28,7 +28,7 @@ class ChromaDB:
             ids = [str(i) for i in range(len(chunk))]        
         )
 
-        print("Successfully store data")
+        # print("Successfully store data")
         return "Successfully store data"
     
     

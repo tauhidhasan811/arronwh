@@ -61,7 +61,7 @@ async def chat_with_ai(previous_chat: str = Form(),
                     file_path = os.path.join(temp_dir, file_name)
                     with open(file_path, "wb") as buffer:
                         shutil.copyfileobj(file.file, buffer)
-                    print(file_path)
+                    # print(file_path)
                     read_file_data = DataProcessor.file_reader_route(path=file_path)
             file_data = read_file_data
 
