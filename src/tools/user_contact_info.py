@@ -19,7 +19,7 @@ def SaveUserContactInfo(body: Body):
     If the information is saved successfully, return a success message. Otherwise, return an error message.
     """
 
-
+    body.referred_by = "ai"
     url = "https://yeloheatbackend.up.railway.app/api/v1/refer"
     payload = body.model_dump()
     response = requests.post(url, data=payload)
