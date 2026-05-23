@@ -12,7 +12,7 @@ class RagKnowledge:
     def update_knowledge(self):
         chunk = DataProcessor.create_chunk(self.path)
         ebd = DataProcessor.embedde_sentence(chunk, ebd_model=self.embedding_model)
-        print(ebd.shape)
+        # print(ebd.shape)
         message = self.chroma_db.store_knowledge(chunk=chunk, embedding=ebd)
         return message
     

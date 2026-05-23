@@ -134,10 +134,10 @@ class AgenController:
                 "tool_result": tool_result
             })
 
-        print("*" * 60)
-        print(" " * 20, "Tools data are")
-        print("*" * 60)
-        print(all_tools_data)
+        # print("*" * 60)
+        # print(" " * 20, "Tools data are")
+        # print("*" * 60)
+        # print(all_tools_data)
 
         return all_tools_data
 
@@ -149,9 +149,9 @@ class AgenController:
 
         tools = getattr(response, "tool_calls", []) or []
 
-        print("x" * 60)
-        print(" " * 20, f"Find tools {tools}")
-        print("x" * 60)
+        # print("x" * 60)
+        # print(" " * 20, f"Find tools {tools}")
+        # print("x" * 60)
 
         if tools:
             tools_data = self.__get_tools_data(tools=tools)
