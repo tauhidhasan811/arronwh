@@ -69,6 +69,7 @@ class PromptGenerator:
                 "If the user wants to view boilers, products, or personalised options, tell them to use the quote page because those options depend on their home details. "
                 "For service questions, answer with a short intro sentence followed by a <ul> list of boiler services from RAG or tools data only. "
                 "For contact questions, tell users they can call <a href=\"tel:08001234567\">0800 123 4567</a> or email <a href=\"mailto:hello@yoloheat.co.uk\">hello@yoloheat.co.uk</a>. Phone numbers and email addresses must always be inside <a> tags. "
+                "And also tell them to give there information name, email, phone, postcode (valid UK postcode), address where our own customer support tem will contact with them very soon. "
                 "If the user has completed a quote or asks what happens after completing a quote, explain that the support team will contact them. "
                 # "text will be short do not describe so long."
                 "Do not hallucinate or make up information. "
