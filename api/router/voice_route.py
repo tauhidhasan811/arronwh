@@ -4,7 +4,7 @@ import binascii
 import json
 import uuid
 from urllib.parse import quote
-
+from typing import Optional
 from fastapi import APIRouter, File, Form, Header, HTTPException, UploadFile, WebSocket, WebSocketDisconnect
 from fastapi.responses import Response
 
@@ -27,9 +27,9 @@ def _get_voice_agent() -> QuoteFollowUpVoiceAgent:
     return voice_agent
 
 
-def _parse_quote_data(raw_quote_data: str):
+def _parse_quote_data(raw_quote_data: str | None):
     if not raw_quote_data:
-        return {}
+        return None
     try:
         return json.loads(raw_quote_data)
     except json.JSONDecodeError:
@@ -49,7 +49,7 @@ def _get_start_quote_data(message: dict) -> str:
 
 @router.post("/quote-follow-up")
 async def quote_follow_up_voice(
-    quote_data: str = Form(...),
+    quote_data: Optional[str] = Form(None),
     audio: UploadFile = File(...),
     session_id: str | None = Form(None),
     x_voice_session_id: str | None = Header(default=None),
@@ -66,11 +66,15 @@ async def quote_follow_up_voice(
             raise HTTPException(status_code=400, detail="Audio file is required.")
 
         previous_chat = voice_memory.get_history(active_session_id)
+        resolved_quote_data = voice_memory.resolve_quote_data(
+            active_session_id,
+            _parse_quote_data(quote_data),
+        )
         response_audio, transcript, answer_text = await _get_voice_agent().handle_voice_follow_up(
             audio_bytes=audio_bytes,
             filename=audio.filename or "voice-input.webm",
             content_type=audio.content_type or "application/octet-stream",
-            quote_data=_parse_quote_data(quote_data),
+            quote_data=resolved_quote_data,
             previous_chat=previous_chat,
         )
 
@@ -157,9 +161,13 @@ async def quote_follow_up_twilio_stream(
             audio_buffer = bytearray()
 
             previous_chat = voice_memory.get_history(active_session_id)
+            resolved_quote_data = voice_memory.resolve_quote_data(
+                active_session_id,
+                _parse_quote_data(active_quote_data),
+            )
             response_audio, transcript, answer_text = await _get_voice_agent().handle_twilio_voice_follow_up(
                 audio_mulaw_bytes=audio_bytes,
-                quote_data=_parse_quote_data(active_quote_data),
+                quote_data=resolved_quote_data,
                 previous_chat=previous_chat,
             )
 
