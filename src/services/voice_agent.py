@@ -16,6 +16,7 @@ from src.services.prompt_templete import PromptGenerator
 @dataclass
 class VoiceConversation:
     history: list[dict[str, str]] = field(default_factory=list)
+    quote_data: Any = None
     updated_at: float = field(default_factory=time.time)
 
 
@@ -32,6 +33,16 @@ class TemporaryVoiceMemory:
             return []
         session.updated_at = time.time()
         return session.history[-self.max_items :]
+
+    def resolve_quote_data(self, session_id: str, quote_data: Any) -> Any:
+        self._cleanup()
+        session = self._sessions.setdefault(session_id, VoiceConversation())
+
+        if self._has_quote_data(quote_data):
+            session.quote_data = quote_data
+
+        session.updated_at = time.time()
+        return session.quote_data
 
     def append(self, session_id: str, user_query: str, ai_response: str) -> None:
         self._cleanup()
@@ -55,6 +66,16 @@ class TemporaryVoiceMemory:
         ]
         for session_id in expired_ids:
             self._sessions.pop(session_id, None)
+
+    @staticmethod
+    def _has_quote_data(quote_data: Any) -> bool:
+        if quote_data is None:
+            return False
+        if isinstance(quote_data, str):
+            return bool(quote_data.strip())
+        if isinstance(quote_data, (dict, list, tuple, set)):
+            return bool(quote_data)
+        return True
 
 
 class QuoteFollowUpVoiceAgent:

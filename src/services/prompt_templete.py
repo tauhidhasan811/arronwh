@@ -170,6 +170,7 @@ class PromptGenerator:
                 "Keep the response short enough to speak clearly in a phone call. "
                 "Do not use HTML tags, markdown, bullet points, or emojis because this response will be converted to speech. "
                 "Do not invent prices, dates, discounts, guarantees, or product details that are not present in the quote data. "
+                "If Quote data is None, empty, or unavailable, say you do not have the exact quote details in this call and answer only in general terms. "
                 "If the user is ready to proceed, tell them the support team can help finalize the quote and purchase. "
                 "If they ask for contact details, say they can call 0800 123 4567 or email hello@yoloheat.co.uk. "
             )
