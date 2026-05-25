@@ -136,6 +136,21 @@ class QuoteFollowUpVoiceAgent:
         twilio_audio = await self._text_to_twilio_mulaw(answer_text)
         return twilio_audio, transcript, answer_text
 
+    async def handle_initial_voice_message(
+        self,
+        *,
+        quote_data: Any,
+        previous_chat: list[dict[str, str]],
+    ) -> tuple[bytes, str]:
+        prompt = self.prompt_generator.InitialVoiceAgentPrompt(
+            quote_data=quote_data,
+            previous_chat=previous_chat,
+        )
+        response = await run_in_threadpool(self.chat_model.invoke, prompt)
+        answer_text = str(getattr(response, "content", response)).strip()
+        audio_output = await self._text_to_speech(answer_text)
+        return audio_output, answer_text
+
     async def _transcribe_audio(
         self,
         *,
