@@ -36,6 +36,16 @@ def _parse_quote_data(raw_quote_data: str | None):
         return raw_quote_data
 
 
+def _resolve_required_session_id(
+    session_id: str | None,
+    x_voice_session_id: str | None,
+) -> str:
+    active_session_id = session_id or x_voice_session_id
+    if not active_session_id:
+        raise HTTPException(status_code=400, detail="session_id is required.")
+    return active_session_id
+
+
 def _get_start_value(message: dict, key: str) -> str:
     start = message.get("start") or {}
     return str(start.get(key) or message.get(key) or "")
@@ -49,7 +59,6 @@ def _get_start_quote_data(message: dict) -> str:
 
 @router.post("/quote-follow-up")
 async def quote_follow_up_voice(
-    quote_data: Optional[str] = Form(None),
     audio: UploadFile = File(...),
     session_id: str | None = Form(None),
     x_voice_session_id: str | None = Header(default=None),
@@ -59,7 +68,7 @@ async def quote_follow_up_voice(
     stores recent turns temporarily by session id, and returns an MP3 voice response.
     """
     try:
-        active_session_id = session_id or x_voice_session_id or str(uuid.uuid4())
+        active_session_id = _resolve_required_session_id(session_id, x_voice_session_id)
         audio_bytes = await audio.read()
 
         if not audio_bytes:
@@ -68,7 +77,7 @@ async def quote_follow_up_voice(
         previous_chat = voice_memory.get_history(active_session_id)
         resolved_quote_data = voice_memory.resolve_quote_data(
             active_session_id,
-            _parse_quote_data(quote_data),
+            None,
         )
         response_audio, transcript, answer_text = await _get_voice_agent().handle_voice_follow_up(
             audio_bytes=audio_bytes,
@@ -92,6 +101,62 @@ async def quote_follow_up_voice(
                 "X-Voice-Transcript": quote(transcript[:800]),
                 "X-Voice-Text": quote(answer_text[:1200]),
             },
+        )
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+async def _create_initial_quote_follow_up_response(
+    *,
+    quote_data: str | None,
+    session_id: str | None,
+    x_voice_session_id: str | None,
+) -> Response:
+    active_session_id = _resolve_required_session_id(session_id, x_voice_session_id)
+    resolved_quote_data = voice_memory.resolve_quote_data(
+        active_session_id,
+        _parse_quote_data(quote_data),
+    )
+
+    response_audio, answer_text = await _get_voice_agent().handle_initial_voice_message(
+        quote_data=resolved_quote_data,
+        previous_chat=[],
+    )
+
+    voice_memory.append(
+        session_id=active_session_id,
+        user_query="[initial voice greeting]",
+        ai_response=answer_text,
+    )
+
+    return Response(
+        content=response_audio,
+        media_type="audio/mpeg",
+        headers={
+            "X-Voice-Session-Id": active_session_id,
+            "X-Voice-Transcript": "",
+            "X-Voice-Text": quote(answer_text[:1200]),
+        },
+    )
+
+
+@router.post("/quote-follow-up/initial")
+async def initial_quote_follow_up_voice(
+    quote_data: Optional[str] = Form(None),
+    session_id: str | None = Form(None),
+    x_voice_session_id: str | None = Header(default=None),
+):
+    """
+    Stores quote data by session id, starts the voice follow-up conversation,
+    and returns the first assistant message as MP3 audio.
+    """
+    try:
+        return await _create_initial_quote_follow_up_response(
+            quote_data=quote_data,
+            session_id=session_id,
+            x_voice_session_id=x_voice_session_id,
         )
     except HTTPException:
         raise

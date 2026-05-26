@@ -194,3 +194,39 @@ class PromptGenerator:
             }
         )
         return str(prompt)
+
+    @staticmethod
+    def InitialVoiceAgentPrompt(quote_data, previous_chat: List[Dict]):
+        compact_chat = PromptGenerator._compact_previous_chat(previous_chat)
+        sys_message = SystemMessage(
+            content=(
+                "You are a warm, natural voice assistant for Yolo Heat. "
+                "The user previously created a boiler quote but has not purchased yet. "
+                "Start the voice conversation with one short, friendly greeting. "
+                "Mention that you are calling about their boiler quote, then ask how you can help or "
+                "whether they had any questions before continuing. "
+                "Keep it natural and short enough to speak clearly in a phone call. "
+                "Do not use HTML tags, markdown, bullet points, or emojis because this response will be converted to speech. "
+                "Do not invent prices, dates, discounts, guarantees, or product details that are not present in the quote data. "
+                "If Quote data is None, empty, or unavailable, keep the greeting general and do not mention exact quote details. "
+            )
+        )
+
+        hum_message = HumanMessage(
+            content=(
+                "Create the first assistant voice message now."
+                f"\n\nQuote data: {quote_data}"
+                f"\n\nRecent voice conversation context only: {compact_chat}"
+            )
+        )
+
+        temp = PromptTemplate(template="System instruction: {sys_message}\n{hum_message}",
+                             input_variables=['sys_message', 'hum_message'])
+
+        prompt = temp.invoke(
+            {
+                'sys_message': sys_message.content,
+                'hum_message': hum_message.content
+            }
+        )
+        return str(prompt)
