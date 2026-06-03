@@ -84,7 +84,12 @@ class QuoteFollowUpVoiceAgent:
         *,
         transcription_model: str = "gpt-4o-mini-transcribe",
         speech_model: str = "gpt-4o-mini-tts",
-        voice: str = "alloy",
+        voice: str = "shimmer",
+        speech_instructions: str = (
+            "Speak in a clear, polite, formal, gentle, feminine-sounding voice. "
+            "Use a warm human customer-care tone, natural pacing, and crisp pronunciation. "
+            "Sound calm, respectful, and reassuring without sounding robotic or overly sales-focused."
+        ),
     ):
         self.client = AsyncOpenAI()
         self.chat_model = ChatModels().GetChatModel()
@@ -92,6 +97,7 @@ class QuoteFollowUpVoiceAgent:
         self.transcription_model = transcription_model
         self.speech_model = speech_model
         self.voice = voice
+        self.speech_instructions = speech_instructions
 
     async def handle_voice_follow_up(
         self,
@@ -184,6 +190,7 @@ class QuoteFollowUpVoiceAgent:
             model=self.speech_model,
             voice=self.voice,
             input=text,
+            instructions=self.speech_instructions,
             response_format=response_format,
         )
         return response.read()

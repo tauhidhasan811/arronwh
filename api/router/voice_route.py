@@ -37,13 +37,11 @@ def _parse_quote_data(raw_quote_data: str | None):
 
 
 def _resolve_required_session_id(
-    session_id: str | None,
     x_voice_session_id: str | None,
 ) -> str:
-    active_session_id = session_id or x_voice_session_id
-    if not active_session_id:
+    if not x_voice_session_id:
         raise HTTPException(status_code=400, detail="session_id is required.")
-    return active_session_id
+    return x_voice_session_id
 
 
 def _get_start_value(message: dict, key: str) -> str:
@@ -60,7 +58,6 @@ def _get_start_quote_data(message: dict) -> str:
 @router.post("/quote-follow-up")
 async def quote_follow_up_voice(
     audio: UploadFile = File(...),
-    session_id: str | None = Form(None),
     x_voice_session_id: str | None = Header(default=None),
 ):
     """
@@ -68,7 +65,7 @@ async def quote_follow_up_voice(
     stores recent turns temporarily by session id, and returns an MP3 voice response.
     """
     try:
-        active_session_id = _resolve_required_session_id(session_id, x_voice_session_id)
+        active_session_id = _resolve_required_session_id(x_voice_session_id)
         audio_bytes = await audio.read()
 
         if not audio_bytes:
@@ -111,10 +108,9 @@ async def quote_follow_up_voice(
 async def _create_initial_quote_follow_up_response(
     *,
     quote_data: str | None,
-    session_id: str | None,
     x_voice_session_id: str | None,
 ) -> Response:
-    active_session_id = _resolve_required_session_id(session_id, x_voice_session_id)
+    active_session_id = _resolve_required_session_id(x_voice_session_id)
     resolved_quote_data = voice_memory.resolve_quote_data(
         active_session_id,
         _parse_quote_data(quote_data),
@@ -145,7 +141,6 @@ async def _create_initial_quote_follow_up_response(
 @router.post("/quote-follow-up/initial")
 async def initial_quote_follow_up_voice(
     quote_data: Optional[str] = Form(None),
-    session_id: str | None = Form(None),
     x_voice_session_id: str | None = Header(default=None),
 ):
     """
@@ -155,7 +150,6 @@ async def initial_quote_follow_up_voice(
     try:
         return await _create_initial_quote_follow_up_response(
             quote_data=quote_data,
-            session_id=session_id,
             x_voice_session_id=x_voice_session_id,
         )
     except HTTPException:
