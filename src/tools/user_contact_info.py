@@ -20,7 +20,7 @@ def SaveUserContactInfo(body: Body):
     """
 
     body.referred_by = "ai"
-    url = "https://yeloheatbackend.up.railway.app/api/v1/refer"
+    url = "https://testapi.yoloheat.com/api/v1/refer"
     payload = body.model_dump()
     response = requests.post(url, data=payload)
     response = response.json()['success']
