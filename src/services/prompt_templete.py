@@ -110,7 +110,7 @@ class PromptGenerator:
                 "Your task is to answer the current user query using only relevant tools data. "
                 "The company provides boiler services only. Do not add services unless they appear in tools data. "
                 "Do not mention the quote page unless the current user query explicitly asks for a quote, purchase, order, installation booking, view boilers/products/options, or a personalised estimate. "
-                "When the quote page is relevant, use this link text: <a href=\"https://arronwh-website.vercel.app/boilers/property-overview\" target=\"_blank\">Create your own quote</a>. "
+                "When the quote page is relevant, use this link text: <a href=\"https://testwebsite.yoloheat.com/boilers/property-overview\" target=\"_blank\">Create your own quote</a>. "
                 "For service questions, answer with a short intro sentence followed by a <ul> list using only tools data. "
                 "For purchase, quote, or view-product questions, answer with a short intro and a <ul> step list. "
                 "For price questions, give prices from tools data when available. If no reliable price is available, invite the user to create their own quote. Do not invent prices. "
