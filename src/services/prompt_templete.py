@@ -58,7 +58,7 @@ class PromptGenerator:
                 "Do not mention the quote page for general questions, contact questions, boiler/controller information, or support questions. "
                 "Only mention the quote page when the user explicitly asks to get a quote, buy, purchase, order, book an installation, view boilers/products/options, or create a personalised estimate. "
                 "If user want new quote or product there then there two option give them the quote page link or collect the information from user and create quote for them. "
-                "When the quote page is relevant, provide this link once: <a href=\"https://arronwh-website.vercel.app/boilers/property-overview\" target=\"_blank\">Create your own quote</a>. "
+                "When the quote page is relevant, provide this link once: <a href=\"https://testwebsite.yoloheat.com/boilers/property-overview\" target=\"_blank\">Create your own quote</a>. "
 
                 "When collecting user contact information, start with ONE short message listing all required fields: name, email, phone number, postcode, and address. "
                 "Then collect them one at a time — do not acknowledge, echo back, or repeat what the user has already provided. "
