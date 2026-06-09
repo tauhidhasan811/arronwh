@@ -40,8 +40,8 @@ async def chat_with_ai(body: Chatbody):
                                                             media_type='text/event-stream')
     
     except Exception as ex:
-         
-         return StreamingResponse(str(ex))
+         message = "Your API key is invalid or has expired. Please check your billing details"
+         return StreamingResponse(message)
 
 
 
