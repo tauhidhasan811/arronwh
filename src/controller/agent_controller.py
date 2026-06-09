@@ -101,7 +101,14 @@ class AgenController:
         self.promptGen = PromptGenerator()
 
     def __call_agent(self, prompt):
-        return self.agent.invoke(prompt)
+        # print("Agent calling")
+        try:
+            result = self.agent.invoke(prompt)
+        except Exception as e:
+            # print("Error occurred while calling agent:", e)
+            raise Exception(f"Your API key is invalid or has expired. Please check your billing details") from e
+        # print("result", result)
+        return result
 
     async def __call_agent_stream(self, prompt) -> AsyncIterable[str]:
         async for chunk in self.agent.astream(prompt):
@@ -143,7 +150,7 @@ class AgenController:
 
     def __get_agent_response(self, prompt):
         response = self.__call_agent(prompt=prompt)
-
+        print("Agent response:", response)
         have_tools = False
         tools_data = []
 

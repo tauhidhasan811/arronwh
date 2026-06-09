@@ -33,7 +33,7 @@ async def chat_with_ai(body: Chatbody):
         }
         agent_controller = AgenController()
 
-        return StreamingResponse(agent_controller.get_response(user_query=user_query, 
+        return StreamingResponse(status_code=200, content=agent_controller.get_response(user_query=user_query, 
                                                             relevent_info = relevent_info, 
                                                             previous_chat=selected_chat,
                                                             file_data=file_data), 
@@ -41,8 +41,7 @@ async def chat_with_ai(body: Chatbody):
     
     except Exception as ex:
          message = "Your API key is invalid or has expired. Please check your billing details"
-         return StreamingResponse(message)
-
+         return StreamingResponse(status_code=500, content = message)
 
 
 @router.post('/chatbot-with-file')
@@ -72,15 +71,15 @@ async def chat_with_ai(previous_chat: str = Form(),
         # print(relevent_info)
         agent_controller = AgenController()
 
-        return StreamingResponse(agent_controller.get_response(user_query=user_query, 
+        return StreamingResponse(status_code=200, content=agent_controller.get_response(user_query=user_query, 
                                                             relevent_info = relevent_info, 
                                                             previous_chat=selected_chat,
                                                             file_data=file_data), 
                                                             media_type='text/event-stream')
     
     except Exception as ex:
-         
-         return StreamingResponse(str(ex))
+         message = "Your API key is invalid or has expired. Please check your billing details"
+         return StreamingResponse(status_code=500, content = message)
     
     
 @router.post('/chatbot-initial-message')
@@ -89,8 +88,8 @@ async def chat_with_ai():
         
         agent_controller = AgenController()
 
-        return StreamingResponse(agent_controller.get_response(), media_type='text/event-stream')
+        return StreamingResponse(status_code=200, content=agent_controller.get_response(), media_type='text/event-stream')
     
     except Exception as ex:
-         
-         return StreamingResponse(str(ex))
+         message = "Your API key is invalid or has expired. Please check your billing details"
+         return StreamingResponse(status_code=500, content = message)
