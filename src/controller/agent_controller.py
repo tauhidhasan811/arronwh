@@ -106,7 +106,7 @@ class AgenController:
             result = self.agent.invoke(prompt)
         except Exception as e:
             # print("Error occurred while calling agent:", e)
-            raise Exception(f"Chatbot is under maintenance. Please try again later.") from e
+            raise Exception(f"Chatbot is currently under maintenance. Please try again later.") from e
         # print("result", result)
         return result
 
